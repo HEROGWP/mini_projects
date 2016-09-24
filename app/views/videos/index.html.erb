@@ -40,10 +40,12 @@
 			<td><%= v.url_address %></td>
 			<td><%= v.description %></td>
 			<td>
-				<%= link_to "edit", videos_path( :id =>  v )%>
-				<%= link_to "destroy", video_path(v), :method => :delete %>
+				<%= link_to "edit", videos_path( :id =>  v, :page => params[:page])%>
+				<%= link_to "destroy", video_path(v, :page => params[:page]), :method => :delete %>
 			</td>
 		</tr>
 	
 	<% end %>
 </table>
+
+<%= paginate @videos %>

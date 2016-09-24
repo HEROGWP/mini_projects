@@ -17,7 +17,9 @@ class VideosController < ApplicationController
 
 		if @video.save
 			flash[:notice] = "success to create"
-			redirect_to videos_path
+			@count = videos_count
+			(@count % 5 == 0) ? (@page = @count / 5) : (@page = @count / 5 + 1)
+			redirect_to videos_path(:page => @page)
 		else
 			flash[:alert] = "failed to create"
 			render :action => :index
@@ -27,7 +29,7 @@ class VideosController < ApplicationController
 	def update
 		if @video.update(video_params)
 			flash[:notice] = "success to update"
-			redirect_to videos_path
+			redirect_to videos_path(:page => params[:page])
 		else
 			flash[:alert] = "failed to update"
 			render :action => :index
@@ -37,7 +39,12 @@ class VideosController < ApplicationController
 	def destroy
 		@video.destroy
 		flash[:notice] = "success to delete"
-		redirect_to videos_path
+		@count = videos_count
+		@page = params[:page].to_i
+		if @count % 5 == 0
+			@page = @page - 1
+		end 
+		redirect_to videos_path(:page => @page)
 	end
 
 	private
@@ -47,10 +54,14 @@ class VideosController < ApplicationController
 	end
 
 	def videos
-		@videos = Video.all
+		@videos = Video.page(params[:page]).per(5)
 	end
 
 	def video
 		@video = Video.find(params[:id])
+	end
+
+	def videos_count
+		Video.all.count
 	end
 end
