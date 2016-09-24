@@ -29,7 +29,8 @@ class VideosController < ApplicationController
 	end
 
 	def destroy
-		
+		@video.destroy
+		redirect_to new_video_path
 	end
 
 	private
