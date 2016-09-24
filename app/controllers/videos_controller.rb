@@ -1,5 +1,5 @@
 class VideosController < ApplicationController
-	before_action :videos, :only => [:new, :edit]
+	before_action :videos, :only => [:new, :create, :edit, :update]
 	before_action :video, :only => [:edit, :update, :destroy]
 	
 	def new
@@ -21,7 +21,11 @@ class VideosController < ApplicationController
 	end
 
 	def update
-		
+		if @video.update(video_params)
+			redirect_to new_video_path
+		else
+			render :edit
+		end
 	end
 
 	def destroy
