@@ -16,22 +16,27 @@ class VideosController < ApplicationController
 		@video = Video.new(video_params)
 
 		if @video.save
+			flash[:notice] = "success to create"
 			redirect_to videos_path
 		else
-			render videos_path
+			flash[:alert] = "failed to create"
+			render :action => :index
 		end
 	end
 
 	def update
 		if @video.update(video_params)
+			flash[:notice] = "success to update"
 			redirect_to videos_path
 		else
-			render videos_path
+			flash[:alert] = "failed to update"
+			render :action => :index
 		end
 	end
 
 	def destroy
 		@video.destroy
+		flash[:notice] = "success to delete"
 		redirect_to videos_path
 	end
 
