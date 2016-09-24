@@ -1,6 +1,0 @@
-<%= form_for @video, :url => videos_path do |v|%>
-	<%= render :partial => "form", :locals => { :v => v } %>
-	<%= v.submit "Create"%>
-<% end %>
-
-<%= render :partial => "list" %>

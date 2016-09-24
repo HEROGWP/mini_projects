@@ -1,6 +1,0 @@
-<%= form_for @video, :url => video_path, :methods => :patch do |v|%>
-	<%= render :partial => "form", :locals => { :v => v } %>
-	<%= v.submit "Update"%>
-<% end %>
-
-<%= render :partial => "list" %>
