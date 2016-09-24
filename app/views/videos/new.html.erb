@@ -1,35 +1,6 @@
 <%= form_for @video, :url => videos_path do |v|%>
-	<p>
-		<%= v.label :name, "Name:" %>
-		<%= v.text_field :name %>
-	</p>
-
-	<p>
-		<%= v.label :url_address, "URL:" %>
-		<%= v.text_field :url_address %>
-	</p>
-
-	<p>
-		<%= v.label :description, "Description:" %>
-		<%= v.text_area :description %>
-	</p>
+	<%= render :partial => "form", :locals => { :v => v } %>
 	<%= v.submit "Create"%>
 <% end %>
 
-<h1>List</h1>
-<table>
-	<tr>
-		<th>Name</th>
-		<th>URL</th>
-		<th>Description</th>
-	</tr>
-	<% @videos.each do |v| %>
-		
-		<tr>
-			<td><%= v.name %></td>
-			<td><%= v.url_address %></td>
-			<td><%= v.description %></td>
-		</tr>
-	
-	<% end %>
-</table>
+<%= render :partial => "list" %>

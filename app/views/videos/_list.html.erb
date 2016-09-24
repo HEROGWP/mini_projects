@@ -1,0 +1,17 @@
+<h1>List</h1>
+<table>
+	<tr>
+		<th>Name</th>
+		<th>URL</th>
+		<th>Description</th>
+	</tr>
+	<% @videos.each do |v| %>
+		
+		<tr>
+			<td><%= v.name %></td>
+			<td><%= v.url_address %></td>
+			<td><%= v.description %></td>
+		</tr>
+	
+	<% end %>
+</table>
