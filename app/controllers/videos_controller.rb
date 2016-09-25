@@ -1,3 +1,6 @@
+require 'securerandom'
+
+
 class VideosController < ApplicationController
 	before_action :videos, :only => [:index, :create, :update]
 	before_action :video, :only => [:update, :destroy]
@@ -14,7 +17,8 @@ class VideosController < ApplicationController
 
 	def create
 		@video = Video.new(video_params)
-
+		@video[:random] = SecureRandom.hex(5)
+		@video[:times] = 0
 		if @video.save
 			flash[:notice] = "success to create"
 			@count = videos_count
@@ -45,6 +49,13 @@ class VideosController < ApplicationController
 			@page = @page - 1
 		end 
 		redirect_to videos_path(:page => @page)
+	end
+
+	def pass_url
+		@video = Video.find_by(:random => params[:random])
+		@address_url = @video.url_address
+		@video.update(:times => @video.times+1)
+		redirect_to @address_url
 	end
 
 	private

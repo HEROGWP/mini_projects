@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160923112250) do
+ActiveRecord::Schema.define(version: 20160925104337) do
 
   create_table "videos", force: :cascade do |t|
     t.string   "name"
@@ -18,6 +18,8 @@ ActiveRecord::Schema.define(version: 20160923112250) do
     t.string   "url_address"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "random"
+    t.integer  "times"
   end
 
 end
