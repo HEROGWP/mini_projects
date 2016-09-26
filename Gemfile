@@ -30,6 +30,7 @@ gem 'jbuilder', '~> 2.5'
 
 #Use bootstrap
 gem 'bootstrap-sass', '~> 3.3.6'
+gem 'faker'
 
 gem "kaminari"
 group :production do
