@@ -42,11 +42,11 @@
 	<% @videos.each do |v| %>
 		
 		<tr>
-			<td><%= v.name %></td>
-			<td><%= v.url_address %></td>
-			<td><%= "https://mini-projects.herokuapp.com/"+v.random.to_s %></td>
+			<td><%= truncate(v.name, :length => 40) %></td>
+			<td><%= truncate(v.url_address, :length => 35) %></td>
+			<td><%= truncate(("https://mini-projects.herokuapp.com/"+v.random.to_s), :length => 50) %></td>
 			<td><%= v.times %></td>
-			<td><%= v.description %></td>
+			<td><%= truncate(v.description, :length => 10) %></td>
 			<td>
 				<%= link_to "", videos_path( :id =>  v, :page => params[:page]), :class => "btn btn-primary glyphicon glyphicon-pencil" %>
 				<%= link_to "", video_path(v, :page => params[:page]), :method => :delete, :class => "btn btn-danger glyphicon glyphicon-remove" %>
@@ -55,6 +55,4 @@
 	
 	<% end %>
 </table>
-<div class="col-md-4 col-sm-4 col-xs-4"></div>
-<div class="col-md-4 col-sm-4 col-xs-4"><%= paginate @videos %></div>
-<div class="col-md-4 col-sm-4 col-xs-4"></div>
+<%= paginate @videos %>
