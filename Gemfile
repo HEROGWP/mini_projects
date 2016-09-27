@@ -31,8 +31,9 @@ gem 'jbuilder', '~> 2.5'
 #Use bootstrap
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'faker'
-
+gem 'nokogiri'
 gem "kaminari"
+
 group :production do
 	gem 'pg'
 	gem 'rails_12factor'
