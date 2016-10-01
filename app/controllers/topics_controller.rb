@@ -13,7 +13,18 @@ class TopicsController < ApplicationController
 		end			
 	end
 	def show
-		
+		@comments = @topic.comments.page(params[:page]).per(5)
+		if params[:id] && params[:comment_id]
+			@comment = Comment.find(params[:comment_id])
+			@url = topic_comment_path(@topic, @comment)
+			@action = "patch"
+			@submit_name = "Update"
+		else
+			@comment = @topic.comments.build
+			@url = topic_comments_path(@topic)
+			@action = "post"
+			@submit_name = "Create"
+		end
 	end
 	def create
 		@topic = current_user.topics.build(topic_params)

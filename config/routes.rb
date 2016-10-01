@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 	
 	resources :videos
-	resources :topics
-	root :to => "videos#index"
+	resources :topics do
+		resources :comments, only: [:new, :create, :edit, :update, :destroy]
+	end
+	root :to => "topics#index"
 	get '*random' => 'videos#pass_url'
 end
