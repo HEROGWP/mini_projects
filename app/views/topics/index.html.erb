@@ -1,0 +1,49 @@
+
+<% if @topic.errors.any? %>
+    <div class="alert alert-warning" role="alert">
+      <% @topic.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </div>
+<% end %>
+
+
+<%= form_for @topic do |t|%>
+	<div class="form-group">
+		<%= t.label :title, "Title:" %>
+		<%= t.text_field :title, :class => "form-control" %>
+	</div>
+
+	<div class="form-group">
+		<%= t.label :content, "Content:" %>
+		<%= t.text_area :content, :class => "form-control" %>
+	</div>
+
+<!-- 	<%= hidden_field_tag :page, params[:page] %> -->
+	<%= t.submit @submit_name, :class => "btn btn-primary" %>
+<% end %>
+
+
+<hr style="height:2px;border:none;color:#333;background-color:#333;" />
+<table class="table table-hover">
+	<tr>
+		<th>Title</th>
+		<th>Content</th>
+		<th>Owner</th>
+		<th></th>
+	</tr>
+	<% @topics.each do |t| %>
+		
+		<tr>
+			<td><%= link_to "#{truncate(t.title, :length => 40)}", topic_path(t) %></td>
+			<td><%= truncate(t.content, :length => 10) %></td>
+			<td><%= t.user.email %></td>
+			<td>
+				<%= link_to "", topics_path( :id =>  t, :page => params[:page]), :class => "btn btn-primary glyphicon glyphicon-pencil" %>
+				<%= link_to "", topic_path(t, :page => params[:page]), :method => :delete, :class => "btn btn-danger glyphicon glyphicon-remove" %>
+			</td>
+		</tr>
+	
+	<% end %>
+</table>
+<%= paginate @topics %>
