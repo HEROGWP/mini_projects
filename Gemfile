@@ -33,6 +33,7 @@ gem 'bootstrap-sass', '~> 3.3.6'
 gem 'faker'
 gem 'nokogiri'
 gem "kaminari"
+gem "devise"
 
 group :production do
 	gem 'pg'

@@ -1,7 +1,5 @@
-require 'securerandom'
-
-
 class VideosController < ApplicationController
+	before_action :authenticate_user!, :except => [:index]
 	before_action :videos, :only => [:index, :create, :update]
 	before_action :video, :only => [:update, :destroy]
 	
