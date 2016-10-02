@@ -10,7 +10,8 @@ class TopicsController < ApplicationController
 		else
 			@topic = current_user.topics.build
 			@submit_name = "Create"
-		end			
+		end
+
 	end
 	def show
 		@comments = @topic.comments.page(params[:page]).per(5)
@@ -68,7 +69,15 @@ class TopicsController < ApplicationController
 	end
 
 	def topics
-		@topics = Topic.page(params[:page]).per(5)
+		if params[:order] == "comments"
+      order_by = "comments_count DESC"
+    elsif params[:order] == "updated_at"
+    	order_by = "updated_at DESC"
+    else   
+      order_by = "created_at"
+    end
+
+    @topics = Topic.order("#{order_by}").page(params[:page]).per(5)
 	end
 
 	def topic
