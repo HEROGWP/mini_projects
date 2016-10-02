@@ -49,7 +49,7 @@
 			<td><%= truncate(v.description, :length => 10) %></td>
 			<td>
 				<%= link_to "", videos_path( :id =>  v, :page => params[:page]), :class => "btn btn-primary glyphicon glyphicon-pencil" %>
-				<%= link_to "", video_path(v, :page => params[:page]), :method => :delete, :class => "btn btn-danger glyphicon glyphicon-remove" %>
+				<%= link_to "", video_path(v, :page => params[:page]), :method => :delete, :class => "btn btn-danger glyphicon glyphicon glyphicon-trash" %>
 			</td>
 		</tr>
 	
