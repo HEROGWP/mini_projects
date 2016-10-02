@@ -13,8 +13,12 @@ class CommentsController < ApplicationController
 			(@count % 5 == 0) ? (@page = @count / 5) : (@page = @count / 5 + 1)
 			redirect_to topic_path(params[:topic_id],:page => @page)
 		else
+			@comment = @topic.comments.build
+			@url = topic_comments_path(@topic)
+			@action = "post"
+			@submit_name = "Create"
 			flash[:alert] = "failed to create"
-			render "topics/show"
+			redirect_to topic_path(params[:topic_id],:page => @page)
 		end
 	end
 
@@ -24,8 +28,12 @@ class CommentsController < ApplicationController
 			flash[:notice] = "success to update"
 			redirect_to topic_path(params[:topic_id],:page => params[:page])
 		else
+			@comment = Comment.find(params[:id])
+			@url = topic_comment_path(@topic, @comment)
+			@action = "patch"
+			@submit_name = "Update"
 			flash[:alert] = "failed to update"
-			render "topics/show"
+			redirect_to topic_path(params[:topic_id],:page => @page)
 		end
 	end
 
