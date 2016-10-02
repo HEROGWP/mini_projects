@@ -14,7 +14,6 @@ class TopicsController < ApplicationController
 
 	end
 	def show
-		@comments = @topic.comments.page(params[:page]).per(5)
 		if params[:id] && params[:comment_id]
 			@comment = Comment.find(params[:comment_id])
 			@url = topic_comment_path(@topic, @comment)
@@ -26,6 +25,10 @@ class TopicsController < ApplicationController
 			@action = "post"
 			@submit_name = "Create"
 		end
+
+		
+		@comments = @topic.comments.order("updated_at DESC").page(params[:page]).per(5)
+
 	end
 	def create
 		@topic = current_user.topics.build(topic_params)

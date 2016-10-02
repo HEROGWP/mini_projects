@@ -9,9 +9,7 @@ class CommentsController < ApplicationController
 		@comment.user = current_user
 		if @comment.save
 			flash[:notice] = "success to create"
-			@count = comments_count
-			(@count % 5 == 0) ? (@page = @count / 5) : (@page = @count / 5 + 1)
-			redirect_to topic_path(params[:topic_id],:page => @page)
+			redirect_to topic_path(params[:topic_id])
 		else
 			@comment = @topic.comments.build
 			@url = topic_comments_path(@topic)
