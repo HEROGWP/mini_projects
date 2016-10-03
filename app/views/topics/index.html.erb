@@ -26,6 +26,10 @@
 	<%= t.submit @submit_name, :class => "btn btn-primary" %>
 <% end %>
 
+<hr style="height:2px;border:none;color:#333;background-color:#333;" />
+<% @categories.each do |c| %>
+	<%= link_to c.name, topics_path(:category => c.name, :order => params[:order] ), :class => "btn btn-info" %>
+<% end %>
 
 <hr style="height:2px;border:none;color:#333;background-color:#333;" />
 <table class="table table-hover">

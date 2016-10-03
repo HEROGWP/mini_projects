@@ -2,6 +2,7 @@ class TopicsController < ApplicationController
 	before_action :authenticate_user!
 	before_action :topics, :only => [:index, :create, :update]
 	before_action :topic, :only => [:show, :update, :destroy]
+	before_action :categories, :only => [:index, :create, :update]
 	
 	def index
 		if params[:id]
@@ -79,8 +80,13 @@ class TopicsController < ApplicationController
     else   
       order_by = "created_at"
     end
-
-    @topics = Topic.order("#{order_by}").page(params[:page]).per(5)
+    
+    if params[:category]
+    	@category = Category.find_by(:name => params[:category])
+			@topics = @category.topics.order("#{order_by}").page(params[:page]).per(5)
+    else
+    	@topics = Topic.order("#{order_by}").page(params[:page]).per(5)
+		end
 	end
 
 	def topic
