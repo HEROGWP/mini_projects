@@ -68,7 +68,7 @@ class TopicsController < ApplicationController
 	private
 
 	def topic_params
-		params.require(:topic).permit(:title, :content)
+		params.require(:topic).permit(:title, :content, :category_ids => [])
 	end
 
 	def topics
@@ -89,5 +89,9 @@ class TopicsController < ApplicationController
 
 	def topics_count
 		Topic.all.count
+	end
+
+	def categories
+		@categories = Category.all
 	end
 end
