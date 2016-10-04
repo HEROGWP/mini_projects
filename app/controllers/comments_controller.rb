@@ -9,30 +9,32 @@ class CommentsController < ApplicationController
 		@comment.user = current_user
 		if @comment.save
 			flash[:notice] = "success to create"
-			redirect_to topic_path(params[:topic_id])
 		else
-			@comment = @topic.comments.build
 			@url = topic_comments_path(@topic)
 			@action = "post"
 			@submit_name = "Create"
 			flash[:alert] = "failed to create"
-			redirect_to topic_path(params[:topic_id],:page => @page)
+
 		end
+
+			redirect_to topic_path(params[:topic_id])
+
 	end
 
 	def update
 		@comment = @topic.comments.find(params[:id])
 		if @comment.update(comment_params)
 			flash[:notice] = "success to update"
-			redirect_to topic_path(params[:topic_id],:page => params[:page])
+			
 		else
-			@comment = Comment.find(params[:id])
 			@url = topic_comment_path(@topic, @comment)
 			@action = "patch"
 			@submit_name = "Update"
 			flash[:alert] = "failed to update"
-			redirect_to topic_path(params[:topic_id],:page => @page)
+
 		end
+
+		redirect_to topic_path(params[:topic_id])
 	end
 
 	def destroy
