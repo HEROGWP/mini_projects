@@ -81,12 +81,21 @@ class TopicsController < ApplicationController
       order_by = "created_at"
     end
     
-    if params[:category]
+    if params[:category] && params[:order] == "latest_comment"
+    	@category = Category.find_by(:name => params[:category])
+			@topics = @category.topics.joins(:comments).order("comments.updated_at DESC").group("id").page(params[:page]).per(5)
+    elsif params[:category]
     	@category = Category.find_by(:name => params[:category])
 			@topics = @category.topics.order("#{order_by}").page(params[:page]).per(5)
-    else
-    	@topics = Topic.order("#{order_by}").page(params[:page]).per(5)
+	  else
+    	if params[:order] == "latest_comment"
+				@topics = Topic.joins(:comments).order("comments.updated_at DESC").group("id").page(params[:page]).per(5)
+			else
+    		@topics = Topic.order("#{order_by}").page(params[:page]).per(5)
+			end
 		end
+
+
 	end
 
 	def topic
