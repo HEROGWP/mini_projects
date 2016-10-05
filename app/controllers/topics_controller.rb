@@ -28,7 +28,7 @@ class TopicsController < ApplicationController
 		end
 
 		
-		@comments = @topic.comments.order("updated_at DESC").page(params[:page]).per(5)
+		@comments = @topic.comments.includes(:user).order("updated_at DESC").page(params[:page]).per(5)
 
 	end
 	def create
