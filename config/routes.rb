@@ -7,5 +7,7 @@ Rails.application.routes.draw do
 		resources :comments, only: [:new, :create, :edit, :update, :destroy]
 	end
 	root :to => "topics#index"
+	get 'abouts' => 'abouts#index'
+	
 	get '*random' => 'videos#pass_url'
 end
