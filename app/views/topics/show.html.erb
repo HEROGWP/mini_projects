@@ -33,7 +33,7 @@
 		<tr>
 			<td><%= truncate(c.content, :length => 100) %></td>
 			<td><%= "Updated by " %> 
-			<%= link_to "#{c.user.email}", profile_path(c.user.profile) %>
+			<%= link_to "#{c.user.email}", profile_path(:id => c.user.profile) %>
 			<%= " at " + time_ago_in_words(c.updated_at) + " ago" %>
 			</td>
 			<td>

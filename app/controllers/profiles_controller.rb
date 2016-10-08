@@ -12,7 +12,7 @@ class ProfilesController < ApplicationController
 		
 		if @profile.save
 			flash[:notice] = "success to create"
-			redirect_to profile_path
+			redirect_to profile_path(:id => @profile.id)
 		else
 			flash[:alert] = "failed to create"
 			render :action => :new
@@ -21,11 +21,13 @@ class ProfilesController < ApplicationController
 
 	def edit
 		@profile = current_user.profile
-
+		@url = profile_path
 		if @profile
+			@action = "patch"
 			@submit_name = "Update"
 		else
 			@profile = current_user.build_profile
+			@action = "post"
 			@submit_name = "Create"
 		end
 	end
@@ -35,7 +37,7 @@ class ProfilesController < ApplicationController
 
 		if @profile.update(profile_params)
 			flash[:notice] = "success to update"
-			redirect_to profile_path
+			redirect_to profile_path(:id => @profile.id)
 		else
 			flash[:alert] = "failed to update"
 			render :action => :edit

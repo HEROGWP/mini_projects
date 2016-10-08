@@ -1,6 +1,6 @@
 <h1>Edit</h1>
 
-<%= form_for @profile do |p| %>
+<%= form_for @profile, :url => @url, :method => @action do |p| %>
 	<% if @profile.errors.any? %>
   	<ul>
   		<% @profile.errors.full_messages.each do |msg| %>
