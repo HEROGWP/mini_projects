@@ -51,8 +51,10 @@
 			<td><%= t.comments.size %></td>
 			<td><%= t.comments.last.try(:updated_at)%></td>
 			<td>
-				<%= link_to "", topics_path( :id =>  t, :page => params[:page], :order => params[:order], :category => params[:category]), :class => "btn btn-primary glyphicon glyphicon-pencil" %>
-				<%= link_to "", topic_path(t, :page => params[:page], :order => params[:order]), :method => :delete, :class => "btn btn-danger glyphicon glyphicon-trash" %>
+				<% if current_user == t.user %>
+					<%= link_to "", topics_path( :id =>  t, :page => params[:page], :order => params[:order], :category => params[:category]), :class => "btn btn-primary glyphicon glyphicon-pencil" %>
+					<%= link_to "", topic_path(t, :page => params[:page], :order => params[:order]), :method => :delete, :class => "btn btn-danger glyphicon glyphicon-trash" %>
+				<% end %>
 			</td>
 		</tr>
 	

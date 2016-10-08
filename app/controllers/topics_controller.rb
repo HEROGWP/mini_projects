@@ -56,8 +56,12 @@ class TopicsController < ApplicationController
 	end
 
 	def destroy
-		@topic.destroy
-		flash[:notice] = "success to delete"
+		if current_user == @topic.user
+			@topic.destroy
+			flash[:notice] = "success to delete"
+		else
+			flash[:alert] = "failed to delete"
+		end
 		@count = topics_count
 		@page = params[:page].to_i
 		if @count % 5 == 0

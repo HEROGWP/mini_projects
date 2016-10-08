@@ -37,8 +37,10 @@
 			<%= " at " + time_ago_in_words(c.updated_at) + " ago" %>
 			</td>
 			<td>
-				<%= link_to "", topic_path(@topic, :comment_id => c, :page => params[:page]), :class => "btn btn-primary glyphicon glyphicon-pencil" %>
-				<%= link_to "", topic_comment_path(@topic,c, :page => params[:page]), :method => :delete, :class => "btn btn-danger glyphicon glyphicon-trash" %>
+				<% if current_user == c.user %>
+					<%= link_to "", topic_path(@topic, :comment_id => c, :page => params[:page]), :class => "btn btn-primary glyphicon glyphicon-pencil" %>
+					<%= link_to "", topic_comment_path(@topic,c, :page => params[:page]), :method => :delete, :class => "btn btn-danger glyphicon glyphicon-trash" %>
+				<% end %>
 			</td>
 		</tr>
 	

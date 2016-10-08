@@ -2,11 +2,9 @@ class ProfilesController < ApplicationController
 	before_action :authenticate_user!
 
 	def show
-		if params[:id]
-			@profile = Profile.find(params[:id])
-		else
-			@profile = current_user.profile
-		end
+		@profile = Profile.find(params[:id])
+		@topics = @profile.user.topics
+		@comments = @profile.user.comments.includes(:topic)
 	end
 	
 	def create

@@ -38,8 +38,12 @@ class CommentsController < ApplicationController
 	end
 
 	def destroy
-		@comment.destroy
-		flash[:notice] = "success to delete"
+		if current_user == @comment.user
+			@comment.destroy
+			flash[:notice] = "success to delete"
+		else
+			flash[:alert] = "failed to delete"
+		end
 		@count = comments_count
 		@page = params[:page].to_i
 		if @count % 5 == 0
