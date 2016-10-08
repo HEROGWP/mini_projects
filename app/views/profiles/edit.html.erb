@@ -1,0 +1,26 @@
+<h1>Edit</h1>
+
+<%= form_for @profile do |p| %>
+	<% if @profile.errors.any? %>
+  	<ul>
+  		<% @profile.errors.full_messages.each do |msg| %>
+    		<li><%= msg %></li>
+  		<% end %>
+  	</ul>
+	<% end %>
+  <div class="form-group">
+		<%= p.label :nickname, "Nickname:" %>
+		<%= p.text_field :nickname, :class => "form-control" %>
+	</div>
+
+	<div class="form-group">
+		<%= p.label :birthday, "Birthday:" %>
+		<%= p.date_select :birthday, :class => "form-control" %>
+	</div>
+
+	<div class="form-group">
+		<%= p.label :bio, "Biography:" %>
+		<%= p.text_area :bio, :class => "form-control" %>
+  </div>
+	<%= p.submit @submit_name, :class => "btn btn-info" %>
+<% end %>

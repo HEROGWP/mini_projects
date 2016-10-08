@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+	get "profile/:id" => "profiles#show", :as => "profile"
+	resource :profile, only: [ :create, :edit, :update]
 	
 	resources :videos
 	resources :topics do
@@ -8,6 +10,6 @@ Rails.application.routes.draw do
 	end
 	root :to => "topics#index"
 	get 'abouts' => 'abouts#index'
-	
+
 	get '*random' => 'videos#pass_url'
 end
