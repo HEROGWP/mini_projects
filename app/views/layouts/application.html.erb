@@ -8,17 +8,55 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+  <body style="padding-top: 70px; ">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">選單切換</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <% if current_user %>
+            <%= link_to "hi,#{current_user.email.split("@")[0]}", profile_path(:id => current_user.profile), :class => "navbar-brand" %>
+          <% else %>
+            <%= link_to "HEROGWP", "https://www.facebook.com/HEROGWP", :class => "navbar-brand" %>
+          <% end %>
+        </div>
+            
+        <!-- 手機隱藏選單區 -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            
+          <!-- 右選單 -->
+          <ul class="nav navbar-nav navbar-right">
+            <% if current_user %>
+              <li><%= link_to "#{current_user.email}", profile_path(:id => current_user.profile) %></li>
+              <li><%= link_to('登出', destroy_user_session_path, :method => :delete) %></li>
+              <li><%= link_to('修改密碼', edit_registration_path(:user)) %></li>
+            <% else %>
+              <li><%= link_to('註冊', new_registration_path(:user)) %></li>
+              <li><%= link_to('登入', new_session_path(:user)) %></li>
+            <% end %>
+            <li><%= link_to "編輯個人簡介", edit_profile_path %></li>
+        
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">各種連結 <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><%= link_to "Videos", videos_path %></li>
+                <li><%= link_to "Topics", topics_path %></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- 手機隱藏選單區結束 -->
+    </nav>
+
   	<div class="container">
       <div class="row">        
         <div class="col-md-12">
-          <% if current_user %>
-            <%= link_to('登出', destroy_user_session_path, :method => :delete) %> |
-            <%= link_to('修改密碼', edit_registration_path(:user)) %>
-          <% else %>
-            <%= link_to('註冊', new_registration_path(:user)) %> |
-            <%= link_to('登入', new_session_path(:user)) %>
-          <% end %>
+          
           <% if flash[:notice].present?%>
             <div class="alert alert-success" role="alert"> 
               <%= flash[:notice] %> 
