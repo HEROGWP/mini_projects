@@ -39,7 +39,8 @@
 		<th>Content</th>
 		<th>Owner</th>
 		<th><%= link_to "Comments", topics_path(:order => :comments, :category => params[:category])%></th>
-		<th><%= link_to "latest_comment", topics_path(:order => :latest_comment, :category => params[:category])%>
+		<th><%= link_to "views", topics_path(:order => :views, :category => params[:category])%></th>
+		<th><%= link_to "latest_comment", topics_path(:order => :latest_comment, :category => params[:category])%></th>
 		<th></th>
 	</tr>
 	<% @topics.each do |t| %>
@@ -53,6 +54,7 @@
 				<td><%= t.user.email %></td>
 			<% end %>
 			<td><%= t.comments.size %></td>
+			<td><%= t.views %></td>
 			<td><%= t.comments.last.try(:updated_at)%></td>
 			<td>
 				<% if current_user == t.user %>

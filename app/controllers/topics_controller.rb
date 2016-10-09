@@ -15,6 +15,8 @@ class TopicsController < ApplicationController
 
 	end
 	def show
+		@topic.views += 1
+		@topic.save
 		if params[:id] && params[:comment_id]
 			@comment = Comment.find(params[:comment_id])
 			@url = topic_comment_path(@topic, @comment)
@@ -81,6 +83,8 @@ class TopicsController < ApplicationController
       order_by = "comments_count DESC"
     elsif params[:order] == "updated_at"
     	order_by = "updated_at DESC"
+    elsif params[:order] == "views"
+    	order_by = "views DESC"
     else   
       order_by = "created_at"
     end
