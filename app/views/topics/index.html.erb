@@ -47,7 +47,11 @@
 		<tr>
 			<td><%= link_to "#{truncate(t.title, :length => 40)}", topic_path(t) %></td>
 			<td><%= truncate(t.content, :length => 10) %></td>
-			<td><%= link_to "#{t.user.email}", profile_path(:id => t.user.profile) %></td>
+			<% if t.user.profile %>
+				<td><%= link_to "#{t.user.email}", profile_path(:id => t.user.profile) %></td>
+			<% else %>
+				<td><%= t.user.email %></td>
+			<% end %>
 			<td><%= t.comments.size %></td>
 			<td><%= t.comments.last.try(:updated_at)%></td>
 			<td>
