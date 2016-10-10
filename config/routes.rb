@@ -10,6 +10,9 @@ Rails.application.routes.draw do
 	resources :topics do
 		resources :comments, only: [:new, :create, :edit, :update, :destroy]
 	end
+	namespace :admin do
+    resources :categories, only: [:index, :create, :update, :destroy]
+  end
 	root :to => "topics#index"
 	get 'abouts' => 'abouts#index'
 

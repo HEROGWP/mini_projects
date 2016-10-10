@@ -100,28 +100,24 @@ class TopicsController < ApplicationController
       order_by = "created_at"
     end
     @category = Category.find_by(:name => params[:category])
-
-    if params[:where] == "draft"
-    	where_by = "draft"
-    else
-    	where_by = "published"
-    end 
     
     if params[:category] && params[:order] == "latest_comment"
-			@topics = @category.topics.where(:status => where_by).joins(:comments).order("comments.updated_at DESC").group("id").page(params[:page]).per(5)
+			@topics = @category.topics.joins(:comments).order("comments.updated_at DESC").group("id").page(params[:page]).per(5)
     elsif params[:category]
-			@topics = @category.topics.where(:status => where_by).order("#{order_by}").page(params[:page]).per(5)
+			@topics = @category.topics.order("#{order_by}").page(params[:page]).per(5)
 	  else
     	if params[:order] == "latest_comment"
-				@topics = Topic.where(:status => where_by).joins(:comments).order("comments.updated_at DESC").group("id").page(params[:page]).per(5)
+				@topics = Topic.joins(:comments).order("comments.updated_at DESC").group("id").page(params[:page]).per(5)
 			else
-    		@topics = Topic.where(:status => where_by).order("#{order_by}").page(params[:page]).per(5)
+    		@topics = Topic.order("#{order_by}").page(params[:page]).per(5)
 			end
 		end
 
 
 		if params[:where] == "draft"
-			@topics = @topics.where(:user_id => current_user.id)
+			@topics = @topics.where(:status => "draft", :user_id => current_user.id)
+		else
+			@topics = @topics.where(:status => "published")
 		end
 
 	end

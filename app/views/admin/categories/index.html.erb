@@ -1,0 +1,39 @@
+
+<% if @category.errors.any? %>
+    <div class="alert alert-warning" role="alert">
+      <% @category.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </div>
+<% end %>
+
+
+<%= form_for @category, :url => @url, :method => @action do |c|%>
+	<div class="form-group">
+		<%= c.label :name, "Category:" %>
+		<%= c.text_field :name, :class => "form-control" %>
+	</div>
+
+	<%= c.submit @submit_name, :class => "btn btn-primary" %>
+<% end %>
+
+
+<hr style="height:2px;border:none;color:#333;background-color:#333;" />
+<table class="table table-hover">
+	<tr>
+		<th>Name</th>
+		<th></th>
+	</tr>
+	<% @categories.each do |c| %>
+		
+		<tr>
+			<td><%= c.name %></td>
+			<td>
+				<%= link_to "", admin_categories_path( :id =>  c, :page => params[:page]), :class => "btn btn-primary glyphicon glyphicon-pencil" %>
+				<%= link_to "", admin_category_path(c, :page => params[:page]), :method => :delete, :class => "btn btn-danger glyphicon glyphicon glyphicon-trash" %>
+			</td>
+		</tr>
+	
+	<% end %>
+</table>
+<%= paginate @categories %>
