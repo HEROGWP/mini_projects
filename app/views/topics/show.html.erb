@@ -1,6 +1,12 @@
-<h1><%= @topic.title %></h1> 
+<h1>
+	<%= @topic.title %>
+	<% if @favorite.present? %>
+		<%= link_to "", favorite_path(:topic_id => params[:id]), :method => :delete, :class => "btn btn-danger btn-lg glyphicon glyphicon-star-empty right" %>
+	<% else %>
+		<%= link_to "", favorite_path(:topic_id => params[:id]), :method => :post, :class => "btn btn-primary btn-lg glyphicon glyphicon-star right" %>
+	<% end %>
+</h1> 
 <p><%= @topic.content %></p>
-
 <% if @comment.errors.any? %>
     <div class="alert alert-warning" role="alert">
       <% @comment.errors.full_messages.each do |msg| %>

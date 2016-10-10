@@ -15,6 +15,7 @@ class TopicsController < ApplicationController
 
 	end
 	def show
+		@favorite = current_user.favorites.find_by(:topic_id => params[:id])
 		@topic.views += 1
 		@topic.save
 		if params[:id] && params[:comment_id]

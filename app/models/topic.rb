@@ -4,5 +4,5 @@ class Topic < ApplicationRecord
 	has_many :comments, :dependent => :destroy
 	has_many :topic_categoryships, :dependent => :destroy
 	has_many :categories, :through => :topic_categoryships
-
+	has_many :favorites, :dependent => :destroy
 end

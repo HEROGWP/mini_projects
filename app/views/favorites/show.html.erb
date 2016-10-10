@@ -1,0 +1,17 @@
+<h1>Favorite topics</h1>
+<table class="table table-hover">
+	<thead>
+		<th>Topic</th>
+		<th>Content</th>
+		<th></th>
+	</thead>
+	<tbody>
+		<% @favorites.each do |f| %>
+			<tr>
+				<td><%= f.topic.title %></td>
+				<td><%= truncate(f.topic.content, :length => 100) %></td>
+				<td><%= link_to "", favorite_path(:topic_id => f.topic), :method => :delete, :class => "btn btn-danger glyphicon glyphicon-star-empty " %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
