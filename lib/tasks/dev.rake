@@ -26,7 +26,7 @@ desc "重建一些假資料"
     	@category = Category.create(name: Faker::Beer.style)
     	puts "create category id is #{@category.name}"
     end
-
+    
     for user in 1..3 do
     	for topic in 1..5 do
     		category_ids = []
@@ -36,11 +36,11 @@ desc "重建一些假資料"
 		    	end
 		    	#puts category_ids
 		    end
-	    	@topic = User.find(user).topics.create(title: Faker::Beer.name, content: Faker::Lorem.paragraph, category_ids: category_ids)
+	    	@topic = User.find(user).topics.create(title: Faker::Beer.name, content: Faker::Lorem.paragraph, category_ids: category_ids, status: "published")
 		  	puts "create topic id is #{@topic.title}"
 		  	User.find(user).topics.each do |topic|
 		  		5.times do
-		  			@comment = topic.comments.build(content: Faker::Lorem.paragraph )
+		  			@comment = topic.comments.build(content: Faker::Lorem.paragraph, status: "published" )
 		  			@comment.user_id = user
 		  			@comment.save
 		  			puts "create comment id is #{@comment.id}"

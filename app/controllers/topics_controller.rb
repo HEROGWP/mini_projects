@@ -33,6 +33,12 @@ class TopicsController < ApplicationController
 		
 		@comments = @topic.comments.includes(:user).order("updated_at DESC").page(params[:page]).per(5)
 
+		if params[:where] == "draft"
+			@comments = @comments.where(:status => "draft", :user_id => current_user.id)
+		else
+			@comments = @comments.where(:status => "published")
+		end
+
 	end
 	def create
 		@topic = current_user.topics.build(topic_params)
@@ -73,10 +79,14 @@ class TopicsController < ApplicationController
 		redirect_to topics_path(:page => @page)
 	end
 
+	def edit_draft
+		@topics = current_user.topics.where(:status => "draft")
+	end
+
 	private
 
 	def topic_params
-		params.require(:topic).permit(:title, :content, :category_ids => [])
+		params.require(:topic).permit(:title, :content, :status, :category_ids => [])
 	end
 
 	def topics
@@ -89,21 +99,30 @@ class TopicsController < ApplicationController
     else   
       order_by = "created_at"
     end
+    @category = Category.find_by(:name => params[:category])
+
+    if params[:where] == "draft"
+    	where_by = "draft"
+    else
+    	where_by = "published"
+    end 
     
     if params[:category] && params[:order] == "latest_comment"
-    	@category = Category.find_by(:name => params[:category])
-			@topics = @category.topics.joins(:comments).order("comments.updated_at DESC").group("id").page(params[:page]).per(5)
+			@topics = @category.topics.where(:status => where_by).joins(:comments).order("comments.updated_at DESC").group("id").page(params[:page]).per(5)
     elsif params[:category]
-    	@category = Category.find_by(:name => params[:category])
-			@topics = @category.topics.order("#{order_by}").page(params[:page]).per(5)
+			@topics = @category.topics.where(:status => where_by).order("#{order_by}").page(params[:page]).per(5)
 	  else
     	if params[:order] == "latest_comment"
-				@topics = Topic.joins(:comments).order("comments.updated_at DESC").group("id").page(params[:page]).per(5)
+				@topics = Topic.where(:status => where_by).joins(:comments).order("comments.updated_at DESC").group("id").page(params[:page]).per(5)
 			else
-    		@topics = Topic.order("#{order_by}").page(params[:page]).per(5)
+    		@topics = Topic.where(:status => where_by).order("#{order_by}").page(params[:page]).per(5)
 			end
 		end
 
+
+		if params[:where] == "draft"
+			@topics = @topics.where(:user_id => current_user.id)
+		end
 
 	end
 

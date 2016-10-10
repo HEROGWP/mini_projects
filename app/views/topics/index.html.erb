@@ -18,6 +18,10 @@
 		<%= t.collection_check_boxes(:category_ids, Category.all, :id, :name)%>
 	</div>
 	<div class="form-group">
+		<%= t.label :status, "Status:" %>
+		<%= t.select :status, [["Pubilshed", "published"], ["Draft", "draft"]]  %>	
+	</div>
+	<div class="form-group">
 		<%= t.label :content, "Content:" %>
 		<%= t.text_area :content, :class => "form-control" %>
 	</div>
@@ -27,24 +31,26 @@
 <% end %>
 
 <hr style="height:2px;border:none;color:#333;background-color:#333;" />
-<%= link_to "All", topics_path, :class => "btn btn-info" %>
+
 <% @categories.each do |c| %>
-	<%= link_to c.name, topics_path(:category => c.name, :order => params[:order] ), :class => "btn btn-info" %>
+	<%= link_to c.name, topics_path(:category => c.name, :order => params[:order], :where => params[:where] ), :class => "btn btn-info" %>
 <% end %>
 
 <hr style="height:2px;border:none;color:#333;background-color:#333;" />
 <table class="table table-hover">
 	<tr>
-		<th><%= link_to "Title", topics_path(:order => :updated_at, :category => params[:category])%></th>
+		<th><%= link_to "Title", topics_path(:order => :updated_at, :category => params[:category], :where => params[:where])%></th>
 		<th>Content</th>
 		<th>Owner</th>
-		<th><%= link_to "Comments", topics_path(:order => :comments, :category => params[:category])%></th>
-		<th><%= link_to "views", topics_path(:order => :views, :category => params[:category])%></th>
-		<th><%= link_to "latest_comment", topics_path(:order => :latest_comment, :category => params[:category])%></th>
-		<th></th>
+		<th><%= link_to "Comments", topics_path(:order => :comments, :category => params[:category], :where => params[:where])%></th>
+		<th><%= link_to "views", topics_path(:order => :views, :category => params[:category], :where => params[:where])%></th>
+		<th><%= link_to "latest_comment", topics_path(:order => :latest_comment, :category => params[:category], :where => params[:where])%></th>
+		<th>
+			<%= link_to "", topics_path, :class => "btn btn-success glyphicon glyphicon-eye-open"%>
+			<%= link_to "", topics_path(:order => params[:order], :category => params[:category], :where => :draft), :class => "btn btn-warning glyphicon glyphicon-eye-close" %>
+		</th>
 	</tr>
 	<% @topics.each do |t| %>
-		
 		<tr>
 			<td><%= link_to "#{truncate(t.title, :length => 40)}", topic_path(t) %></td>
 			<td><%= truncate(t.content, :length => 10) %></td>
@@ -58,12 +64,11 @@
 			<td><%= t.comments.last.try(:updated_at)%></td>
 			<td>
 				<% if current_user == t.user %>
-					<%= link_to "", topics_path( :id =>  t, :page => params[:page], :order => params[:order], :category => params[:category]), :class => "btn btn-primary glyphicon glyphicon-pencil" %>
-					<%= link_to "", topic_path(t, :page => params[:page], :order => params[:order]), :method => :delete, :class => "btn btn-danger glyphicon glyphicon-trash" %>
+					<%= link_to "", topics_path( :id =>  t, :page => params[:page], :order => params[:order], :category => params[:category], :where => params[:where]), :class => "btn btn-primary glyphicon glyphicon-pencil" %>
+					<%= link_to "", topic_path(t, :page => params[:page], :order => params[:order], :category => params[:category], :where => params[:where]), :method => :delete, :class => "btn btn-danger glyphicon glyphicon-trash" %>
 				<% end %>
 			</td>
 		</tr>
-	
 	<% end %>
 </table>
 <%= paginate @topics %>
