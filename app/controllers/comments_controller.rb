@@ -17,13 +17,13 @@ class CommentsController < ApplicationController
 
 		end
 
-			redirect_to topic_path(params[:topic_id])
+			redirect_to topic_path(params[:topic_id], :status => @comment.status)
 
 	end
 
 	def update
 		@comment = @topic.comments.find(params[:id])
-		if @comment.update(comment_params)
+		if @comment.update(comment_params) && (current_user == @comment.user || current_user.admin?)
 			flash[:notice] = "success to update"
 			
 		else
@@ -34,11 +34,11 @@ class CommentsController < ApplicationController
 
 		end
 
-		redirect_to topic_path(params[:topic_id])
+		redirect_to topic_path(params[:topic_id], :status => @comment.status)
 	end
 
 	def destroy
-		if current_user == @comment.user
+		if current_user == @comment.user || current_user.admin?
 			@comment.destroy
 			flash[:notice] = "success to delete"
 		else
@@ -49,7 +49,7 @@ class CommentsController < ApplicationController
 		if @count % 5 == 0
 			@page = @page - 1
 		end 
-		redirect_to topic_path(params[:topic_id],:page => @page)
+		redirect_to topic_path(params[:topic_id],:page => @page, :status => @comment.status)
 	end
 
 	private

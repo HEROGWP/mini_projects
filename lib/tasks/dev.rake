@@ -17,7 +17,7 @@ desc "重建一些假資料"
 	      puts "create video id is #{@video.id}"
     	end
     end
-    User.create(email: "test@gmail.com", password: "12345678", password_confirmation: "12345678")
+    User.create(email: "test@gmail.com", password: "12345678", password_confirmation: "12345678", role: "admin")
     User.create(email: "pp820819@gmail.com", password: "12345678", password_confirmation: "12345678")
     User.create(email: "iamcute@gmail.com", password: "12345678", password_confirmation: "12345678")
 

@@ -3,7 +3,8 @@ class TopicsController < ApplicationController
 	before_action :topics, :only => [:index, :create, :update]
 	before_action :topic, :only => [:show, :update, :destroy]
 	before_action :categories, :only => [:index, :create, :update]
-	
+
+
 	def index
 		if params[:id]
 			@topic = Topic.find(params[:id])
@@ -33,7 +34,9 @@ class TopicsController < ApplicationController
 		
 		@comments = @topic.comments.includes(:user).order("updated_at DESC").page(params[:page]).per(5)
 
-		if params[:where] == "draft"
+		if current_user.admin? && params[:status] == "draft"
+			@comments = @comments.where(:status => "draft")
+		elsif params[:status] == "draft"
 			@comments = @comments.where(:status => "draft", :user_id => current_user.id)
 		else
 			@comments = @comments.where(:status => "published")
@@ -44,9 +47,11 @@ class TopicsController < ApplicationController
 		@topic = current_user.topics.build(topic_params)
 		if @topic.save
 			flash[:notice] = "success to create"
-			@count = topics_count
+			@topic_temp = @topic
+			topics_count
+			@count = @topics.count
 			(@count % 5 == 0) ? (@page = @count / 5) : (@page = @count / 5 + 1)
-			redirect_to topics_path(:page => @page)
+			redirect_to topics_path(:page => @page, :status => @topic.status)
 		else
 			flash[:alert] = "failed to create"
 			render :action => :index
@@ -54,10 +59,10 @@ class TopicsController < ApplicationController
 	end
 
 	def update
-		@topic = current_user.topics.find(params[:id])
-		if @topic.update(topic_params)
+		@topic = Topic.find(params[:id])
+		if @topic.update(topic_params) && (current_user == @topic.user || current_user.admin?)
 			flash[:notice] = "success to update"
-			redirect_to topics_path(:page => params[:page])
+			redirect_to topics_path(:page => @page, :status => @topic.status)
 		else
 			flash[:alert] = "failed to update"
 			render :action => :index
@@ -65,22 +70,23 @@ class TopicsController < ApplicationController
 	end
 
 	def destroy
-		if current_user == @topic.user
+		if current_user == @topic.user || current_user.admin?
+			@topic_temp = @topic
 			@topic.destroy
 			flash[:notice] = "success to delete"
+			topics_count
+			@count = @topics.count
+			@page = params[:page].to_i
+			if @count % 5 == 0
+				@page = @page - 1
+			end 
+			redirect_to topics_path(:page => @page, :status => params[:status])
 		else
 			flash[:alert] = "failed to delete"
+			redirect_to :back
 		end
-		@count = topics_count
-		@page = params[:page].to_i
-		if @count % 5 == 0
-			@page = @page - 1
-		end 
-		redirect_to topics_path(:page => @page)
-	end
-
-	def edit_draft
-		@topics = current_user.topics.where(:status => "draft")
+		
+		
 	end
 
 	private
@@ -102,24 +108,26 @@ class TopicsController < ApplicationController
     @category = Category.find_by(:name => params[:category])
     
     if params[:category] && params[:order] == "latest_comment"
-			@topics = @category.topics.joins(:comments).order("comments.updated_at DESC").group("id").page(params[:page]).per(5)
+			@topics = @category.topics.joins(:comments).order("comments.updated_at DESC").group("id")
     elsif params[:category]
-			@topics = @category.topics.order("#{order_by}").page(params[:page]).per(5)
+			@topics = @category.topics.order("#{order_by}")
 	  else
     	if params[:order] == "latest_comment"
-				@topics = Topic.joins(:comments).order("comments.updated_at DESC").group("id").page(params[:page]).per(5)
+				@topics = Topic.joins(:comments).order("comments.updated_at DESC").group("id")
 			else
-    		@topics = Topic.order("#{order_by}").page(params[:page]).per(5)
+    		@topics = Topic.order("#{order_by}")
 			end
 		end
 
 
-		if params[:where] == "draft"
+		if current_user.admin? && params[:status] == "draft"
+			@topics = @topics.where(:status => params[:status])
+		elsif params[:status] == "draft"
 			@topics = @topics.where(:status => "draft", :user_id => current_user.id)
 		else
 			@topics = @topics.where(:status => "published")
 		end
-
+		@topics = @topics.page(params[:page]).per(5)
 	end
 
 	def topic
@@ -127,7 +135,14 @@ class TopicsController < ApplicationController
 	end
 
 	def topics_count
-		Topic.all.count
+		@topic = @topic_temp
+		if current_user.admin? && @topic.status == "draft"
+			@topics = Topic.where(:status => "draft")
+		elsif @topic.status == "draft"
+			@topics = Topic.where(:status => "draft", :user_id => current_user.id)
+		else
+			@topics = Topic.where(:status => "published")
+		end	
 	end
 
 	def categories

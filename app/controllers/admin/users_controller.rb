@@ -35,8 +35,8 @@ class Admin::UsersController < ApplicationController
 
 	def update
 		if @user.profile.update(profile_params)
-			raise
-			flash[:notice] = "success to update"
+
+ 			flash[:notice] = "success to update"
 			redirect_to edit_admin_user_path(@user)
 		else
 			flash[:alert] = "failed to update"
@@ -74,7 +74,7 @@ class Admin::UsersController < ApplicationController
 
 	def check_admin
 		unless current_user.admin?
-			raise ActiveRecord::RecordNotFound
+		  ActiveRecord::RecordNotFound
 		end
 	end
 
