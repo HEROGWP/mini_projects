@@ -34,6 +34,8 @@ gem 'faker'
 gem 'nokogiri'
 gem "kaminari"
 gem "devise"
+gem 'gravtastic'
+
 
 group :production do
 	gem 'pg'

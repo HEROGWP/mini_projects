@@ -19,6 +19,7 @@
             <span class="icon-bar"></span>
           </button>
           <% if current_user %>
+            <%= image_tag current_user.gravatar_url, :class => "user_pic" %>
             <%= link_to "hi,#{current_user.email.split("@")[0]}", profile_path(:id => current_user.profile), :class => "navbar-brand" %>
           <% else %>
             <%= link_to "HEROGWP", "https://www.facebook.com/HEROGWP", :class => "navbar-brand" %>
