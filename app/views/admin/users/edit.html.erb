@@ -1,0 +1,64 @@
+
+<% if @user.errors.any? %>
+    <div class="alert alert-warning" role="alert">
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </div>
+<% end %>
+
+
+<%= form_for @profile, :url => @url, method: @action do |p|%>
+	<div class="form-group">
+		<%= p.label :nickname, "Nickname:" %>
+		<%= p.text_field :nickname, :class => "form-control" %>
+	</div>
+
+	<div class="form-group">
+		<%= p.label :birthday, "Birthday:" %>
+		<%= p.date_select :birthday, :class => "form-control" %>
+	</div>
+
+	<div class="form-group">
+		<%= p.label :bio, "Biography:" %>
+		<%= p.text_area :bio, :class => "form-control" %>
+  </div>
+
+
+	<%= p.submit @submit_name, :class => "btn btn-primary" %>
+<% end %>
+
+
+<hr style="height:2px;border:none;color:#333;background-color:#333;" />
+<table class="table table-hover">
+	<tr>
+		<th>Email</th>
+		<th>Nickname</th>
+		<th>Birthday</th>
+		<th>Bio</th>
+		<th>Author</th>
+		<th></th>
+	</tr>
+	<% @users.each do |u| %>
+		
+		<tr>
+			<td><%= u.email %></td>
+			<td><%= u.profile.try(:nickname) %></td>
+			<td><%= u.profile.try(:birthday) %></td>
+			<td><%= truncate((u.profile.try(:bio)), :length => 50) %></td>
+			<td><%= u.role %></td>
+			<td>
+				<%= link_to "", edit_admin_user_path(u, :page => params[:page]), :class => "btn btn-primary glyphicon glyphicon-pencil" %>
+				<% unless current_user == u %>
+					<% if u.role == "user" %>
+						<%= link_to "", role_change_admin_user_path(u, :role => "admin"), :class => "btn btn-danger glyphicon glyphicon-remove"  %>
+					<% else %>
+						<%= link_to "", role_change_admin_user_path(u, :role => "user"), :class => "btn btn-success glyphicon glyphicon-ok"  %>
+					<% end %>
+				<% end %>
+			</td>
+		</tr>
+	
+	<% end %>
+</table>
+<%= paginate @users %>

@@ -12,6 +12,11 @@ Rails.application.routes.draw do
 	end
 	namespace :admin do
     resources :categories, only: [:index, :create, :update, :destroy]
+    resources :users, only: [:create,:edit, :update] do
+    	member do
+      	get :role_change
+    end
+    end
   end
 	root :to => "topics#index"
 	get 'abouts' => 'abouts#index'
