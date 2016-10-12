@@ -81,9 +81,9 @@ class CommentsController < ApplicationController
 
 	def set_page(comment)
 		count = @comments.find_index(comment)
-		if @comments.last == comment && ( count % 5 ==1)
+		if @comments.last == comment && ( count % 5 == 0)
 			@page = count / 5
-		elsif (count % 5 ) == 0
+		elsif (count % 5 ) == 4
 			@page = count / 5 
 		else
 			@page = count / 5 + 1

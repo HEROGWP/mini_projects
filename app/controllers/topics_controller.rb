@@ -144,9 +144,9 @@ class TopicsController < ApplicationController
 
 	def set_page(topic)
 		count = @topics.find_index(topic)
-		if @topics.last == topic && ( count % 5 ==1)
+		if @topics.last == topic && ( count % 5 == 0)
 			@page = count / 5
-		elsif (count % 5 ) == 0
+		elsif (count % 5 ) == 4
 			@page = count / 5 
 		else
 			@page = count / 5 + 1
