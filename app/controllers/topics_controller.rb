@@ -31,7 +31,7 @@ class TopicsController < ApplicationController
 		end
 
 		
-		@comments = @topic.comments.includes(:user).order("updated_at DESC").page(params[:page]).per(5)
+		@comments = @topic.comments.includes(:user => [:profile]).order("updated_at DESC").page(params[:page]).per(5)
 
 		if current_user.admin? && params[:status] == "draft"
 			@comments = @comments.where(:status => "draft")
