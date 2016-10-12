@@ -1,9 +1,8 @@
 class TopicsController < ApplicationController
 	before_action :authenticate_user!
-	before_action :topics, :only => [:index, :create, :update]
-	before_action :topic, :only => [:show, :update, :destroy]
+	before_action :set_topics, :only => [:index, :create, :update, :destroy]
+	before_action :set_topic, :only => [:show, :update, :destroy]
 	before_action :categories, :only => [:index, :create, :update]
-
 
 	def index
 		if params[:id]
@@ -47,9 +46,8 @@ class TopicsController < ApplicationController
 		@topic = current_user.topics.build(topic_params)
 		if @topic.save
 			flash[:notice] = "success to create"
-			@topic_temp = @topic
-			topics_count
-			@count = @topics.count
+			set_topics_when_create(@topic)
+			@count = @topics.size
 			(@count % 5 == 0) ? (@page = @count / 5) : (@page = @count / 5 + 1)
 			redirect_to topics_path(:page => @page, :status => @topic.status)
 		else
@@ -73,16 +71,11 @@ class TopicsController < ApplicationController
 
 	def destroy
 		if current_user == @topic.user || current_user.admin?
-			@topic_temp = @topic
+			set_page(@topic)
 			@topic.destroy
 			flash[:notice] = "success to delete"
-			topics_count
-			@count = @topics.count
-			@page = params[:page].to_i
-			if @count % 5 == 0
-				@page = @page - 1
-			end 
-			redirect_to topics_path(:page => @page, :status => params[:status])
+			
+			redirect_to topics_path(:page => @page, :status => params[:status], :order => params[:order], :category => params[:category])
 		else
 			flash[:alert] = "failed to delete"
 			redirect_to :back
@@ -96,7 +89,7 @@ class TopicsController < ApplicationController
 		params.require(:topic).permit(:title, :content, :status, :category_ids => [])
 	end
 
-	def topics
+	def set_topics
 		if params[:order] == "comments"
       order_by = "comments_count DESC"
     elsif params[:order] == "updated_at"
@@ -128,25 +121,35 @@ class TopicsController < ApplicationController
 		else
 			@topics = @topics.where(:status => "published")
 		end
-		@topics = @topics.page(params[:page]).per(5)
 	end
 
-	def topic
 	def set_pagination		
 		@topics = @topics.includes(:user => [:profile]).page(params[:page]).per(5)
 	end
+
+	def set_topic
 		@topic = Topic.find(params[:id])
 	end
 
-	def topics_count
-		@topic = @topic_temp
-		if current_user.admin? && @topic.status == "draft"
+	def set_topics_when_create(topic)
+		if current_user.admin? && topic.status == "draft"
 			@topics = Topic.where(:status => "draft")
-		elsif @topic.status == "draft"
+		elsif topic.status == "draft"
 			@topics = Topic.where(:status => "draft", :user_id => current_user.id)
 		else
 			@topics = Topic.where(:status => "published")
-		end	
+		end
+	end
+
+	def set_page(topic)
+		count = @topics.find_index(topic)
+		if @topics.last == topic && ( count % 5 ==1)
+			@page = count / 5
+		elsif (count % 5 ) == 0
+			@page = count / 5 
+		else
+			@page = count / 5 + 1
+		end
 	end
 
 	def categories
