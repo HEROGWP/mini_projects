@@ -18,7 +18,7 @@ desc "重建一些假資料"
     	end
     end
     User.create(email: "test@gmail.com", password: "12345678", password_confirmation: "12345678", role: "admin")
-    User.create(email: "pp820819@gmail.com", password: "12345678", password_confirmation: "12345678")
+    User.create(email: "pp820819@gmail.com", password: "12345678", password_confirmation: "12345678", role: "admin")
     User.create(email: "iamcute@gmail.com", password: "12345678", password_confirmation: "12345678")
 
     
@@ -36,16 +36,22 @@ desc "重建一些假資料"
 		    	end
 		    	#puts category_ids
 		    end
-	    	@topic = User.find(user).topics.create(title: Faker::Beer.name, content: Faker::Lorem.paragraph, category_ids: category_ids, status: "published")
+	    	@topic = User.find(user).topics.create(title: Faker::Beer.name, content: Faker::Lorem.paragraph, status: "published", category_ids: category_ids)
 		  	puts "create topic id is #{@topic.title}"
-		  	User.find(user).topics.each do |topic|
-		  		5.times do
-		  			@comment = topic.comments.build(content: Faker::Lorem.paragraph, status: "published" )
-		  			@comment.user_id = user
-		  			@comment.save
-		  			puts "create comment id is #{@comment.id}"
-		  		end
-		  	end
+		  	for users in 1..3 do
+			  	User.find(users).topics.each do |topic|
+			  		5.times do
+			  			@comment = topic.comments.build(content: Faker::Lorem.paragraph, status: "published" )
+			  			@comment.user_id = users
+			  			@comment.save
+			  			puts "create comment id is #{@comment.id}"
+			  			@comment = topic.comments.build(content: Faker::Lorem.paragraph, status: "draft" )
+			  			@comment.user_id = users
+			  			@comment.save
+			  			puts "create comment id is #{@comment.id}"
+			  		end
+			  	end
+			  end
 		  end
 
 
