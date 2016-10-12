@@ -49,12 +49,13 @@ class TopicsController < ApplicationController
 			set_topics_when_create(@topic)
 			@count = @topics.size
 			(@count % 5 == 0) ? (@page = @count / 5) : (@page = @count / 5 + 1)
+			set_pagination
 			redirect_to topics_path(:page => @page, :status => @topic.status)
 		else
 			flash[:alert] = "failed to create"
+			set_pagination
 			render :action => :index
 		end
-		set_pagination
 	end
 
 	def update
