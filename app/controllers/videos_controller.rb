@@ -1,6 +1,6 @@
 class VideosController < ApplicationController
 	before_action :authenticate_user!, :except => [:index]
-	before_action :videos, :only => [:index, :create, :update]
+	before_action :videos
 	before_action :video, :only => [:update, :destroy]
 	
 	def index
@@ -11,6 +11,7 @@ class VideosController < ApplicationController
 			@video = Video.new
 			@submit_name = "Create"
 		end			
+		set_pagination
 	end
 
 	def create
@@ -21,9 +22,11 @@ class VideosController < ApplicationController
 			flash[:notice] = "success to create"
 			@count = videos_count
 			(@count % 5 == 0) ? (@page = @count / 5) : (@page = @count / 5 + 1)
+			set_pagination
 			redirect_to videos_path(:page => @page)
 		else
 			flash[:alert] = "failed to create"
+			set_pagination
 			render :action => :index
 		end
 	end
@@ -31,21 +34,20 @@ class VideosController < ApplicationController
 	def update
 		if @video.update(video_params)
 			flash[:notice] = "success to update"
+			set_pagination
 			redirect_to videos_path(:page => params[:page])
 		else
 			flash[:alert] = "failed to update"
+			set_pagination
 			render :action => :index
 		end
 	end
 
 	def destroy
+		set_page(@video)
 		@video.destroy
 		flash[:notice] = "success to delete"
-		@count = videos_count
-		@page = params[:page].to_i
-		if @count % 5 == 0
-			@page = @page - 1
-		end 
+		set_pagination
 		redirect_to videos_path(:page => @page)
 	end
 
@@ -63,7 +65,11 @@ class VideosController < ApplicationController
 	end
 
 	def videos
-		@videos = Video.page(params[:page]).per(5)
+		@videos = Video.all
+	end
+
+	def set_pagination
+		@videos = @videos.page(params[:page]).per(5)
 	end
 
 	def video
@@ -72,5 +78,16 @@ class VideosController < ApplicationController
 
 	def videos_count
 		Video.all.count
+	end
+
+	def set_page(video)
+		count = @videos.find_index(video)
+		if @videos.last == video && ( count % 5 == 0)
+			@page = count / 5
+		elsif (count % 5 ) == 4
+			@page = count / 5 
+		else
+			@page = count / 5 + 1
+		end
 	end
 end
