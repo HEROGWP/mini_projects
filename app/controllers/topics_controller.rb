@@ -13,7 +13,7 @@ class TopicsController < ApplicationController
 			@topic = current_user.topics.build
 			@submit_name = "Create"
 		end
-
+		set_pagination
 	end
 	def show
 		@favorite = current_user.favorites.find_by(:topic_id => params[:id])
@@ -56,6 +56,7 @@ class TopicsController < ApplicationController
 			flash[:alert] = "failed to create"
 			render :action => :index
 		end
+		set_pagination
 	end
 
 	def update
@@ -67,6 +68,7 @@ class TopicsController < ApplicationController
 			flash[:alert] = "failed to update"
 			render :action => :index
 		end
+		set_pagination
 	end
 
 	def destroy
@@ -85,8 +87,7 @@ class TopicsController < ApplicationController
 			flash[:alert] = "failed to delete"
 			redirect_to :back
 		end
-		
-		
+		set_pagination
 	end
 
 	private
@@ -131,6 +132,9 @@ class TopicsController < ApplicationController
 	end
 
 	def topic
+	def set_pagination		
+		@topics = @topics.includes(:user => [:profile]).page(params[:page]).per(5)
+	end
 		@topic = Topic.find(params[:id])
 	end
 
