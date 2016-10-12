@@ -1,8 +1,8 @@
 class CommentsController < ApplicationController
 	before_action :authenticate_user!
-	before_action :comments, :only => [:create, :update]
-	before_action :comment, :only => [:update, :destroy]
-	before_action :topic
+	before_action :set_comments
+	before_action :set_comment, :only => [:update, :destroy]
+	before_action :set_topic
 
 	def create
 		@comment = @topic.comments.build(comment_params)
@@ -16,8 +16,8 @@ class CommentsController < ApplicationController
 			flash[:alert] = "failed to create"
 
 		end
-
-			redirect_to topic_path(params[:topic_id], :status => @comment.status)
+		set_pagination
+		redirect_to topic_path(params[:topic_id], :status => @comment.status)
 
 	end
 
@@ -33,22 +33,19 @@ class CommentsController < ApplicationController
 			flash[:alert] = "failed to update"
 
 		end
-
+		set_pagination
 		redirect_to topic_path(params[:topic_id], :status => @comment.status)
 	end
 
 	def destroy
 		if current_user == @comment.user || current_user.admin?
+			set_page(@comment)
 			@comment.destroy
 			flash[:notice] = "success to delete"
 		else
 			flash[:alert] = "failed to delete"
 		end
-		@count = comments_count
-		@page = params[:page].to_i
-		if @count % 5 == 0
-			@page = @page - 1
-		end 
+		set_pagination
 		redirect_to topic_path(params[:topic_id],:page => @page, :status => @comment.status)
 	end
 
@@ -58,19 +55,38 @@ class CommentsController < ApplicationController
 		params.require(:comment).permit(:content, :status)
 	end
 
-	def comments
-		@comments = Topic.find(params[:topic_id]).comments.page(params[:page]).per(5)
+	def set_comments
+		@comments = Topic.find(params[:topic_id]).comments.order("updated_at DESC")
+
+		if current_user.admin? && params[:status] == "draft"
+			@comments = @comments.where(:status => params[:status])
+		elsif params[:status] == "draft"
+			@comments = @comments.where(:status => "draft", :user_id => current_user.id)
+		else
+			@comments = @comments.where(:status => "published")
+		end
+	end
+	
+	def set_pagination
+	 @comments = @comments.page(params[:page]).per(5)
 	end
 
-	def comment
+	def set_comment
 		@comment = Comment.find(params[:id])
 	end
 
-	def topic
+	def set_topic
 		@topic = Topic.find(params[:topic_id])
 	end
 
-	def comments_count
-		Topic.find(params[:topic_id]).comments.all.count
+	def set_page(comment)
+		count = @comments.find_index(comment)
+		if @comments.last == comment && ( count % 5 ==1)
+			@page = count / 5
+		elsif (count % 5 ) == 0
+			@page = count / 5 
+		else
+			@page = count / 5 + 1
+		end
 	end
 end
