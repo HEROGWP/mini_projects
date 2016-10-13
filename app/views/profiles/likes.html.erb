@@ -1,0 +1,15 @@
+<h1>I like topics</h1>
+<table class="table table-hover">
+	<thead>
+		<th>All likes topics</th>
+		<th>Content</th>
+	</thead>
+	<tbody>
+		<% @like_topics.each do |t| %>
+			<tr>
+				<td><%= t.title %></td>
+				<td><%= truncate(t.content, :length => 50) %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

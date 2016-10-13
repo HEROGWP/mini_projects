@@ -44,9 +44,8 @@ class ProfilesController < ApplicationController
 		end
 	end
 
-	def edit_draft
-		@topics = current_user.topics.where(:status => "draft")
-		@comments = current_user.comments.where(:status => "draft")
+	def likes
+		@like_topics = current_user.like_topics
 	end
 
 	private

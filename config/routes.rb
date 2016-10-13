@@ -4,7 +4,11 @@ Rails.application.routes.draw do
   resource :favorite, only: [:show, :create, :destroy]
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-	resource :profile, only: [:show, :create, :edit, :update]
+	resource :profile, only: [:show, :create, :edit, :update] do
+		collection do
+			get :likes
+		end
+	end
 	
 	resources :videos
 	resources :topics do
