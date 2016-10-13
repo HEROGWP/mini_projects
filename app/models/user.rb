@@ -12,6 +12,8 @@ class User < ApplicationRecord
   has_many :comments, :dependent => :destroy
   has_one :profile, :dependent => :destroy
   has_many :favorites, :dependent => :destroy
+  has_many :likes, :dependent => :destroy
+  has_many :like_topics, :through => :likes, :source => :topic
 
   def admin?
   	self.role == "admin"

@@ -9,6 +9,10 @@ Rails.application.routes.draw do
 	resources :videos
 	resources :topics do
 		resources :comments, only: [:new, :create, :edit, :update, :destroy]
+		member do
+			post :like
+			post :unlike
+		end
 	end
 	namespace :admin do
     resources :categories, only: [:index, :create, :update, :destroy]

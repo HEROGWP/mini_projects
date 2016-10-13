@@ -15,7 +15,9 @@ class TopicsController < ApplicationController
 		set_pagination
 	end
 	def show
+		@users = @topic.like_users
 		@favorite = current_user.favorites.find_by(:topic_id => params[:id])
+		@like = current_user.likes.find_by(:topic_id => params[:id])
 		@topic.views += 1
 		@topic.save
 		if params[:id] && params[:comment_id]
@@ -82,6 +84,24 @@ class TopicsController < ApplicationController
 			redirect_to :back
 		end
 		set_pagination
+	end
+
+
+	def like
+		@like = current_user.likes.build(:topic_id => params[:topic_id])
+		if @like.save
+			flash[:notice] = "success add to likes"
+		else
+			flash[:alert] = "faild to create"
+		end
+		redirect_to :back
+	end
+
+	def unlike
+		@like = current_user.likes.find_by(:topic_id => params[:topic_id])
+		@like.destroy
+		flash[:notice] = "success remove to likes"
+		redirect_to :back
 	end
 
 	private

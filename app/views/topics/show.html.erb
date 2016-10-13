@@ -8,12 +8,21 @@
 }(document, 'script', 'facebook-jssdk'));</script>
 
 <div class="fb-like" data-href="<%=request.original_url%>" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+<% @users.each do |u| %>
+	<%= image_tag u.gravatar_url, :class => "right"%>
+<% end %>
+<div style="clear: both;"></div>
 <h1>
 	<%= @topic.title %>
-	<% if @favorite.present? %>
-		<%= link_to "", favorite_path(:topic_id => params[:id]), :method => :delete, :class => "btn btn-danger btn-lg glyphicon glyphicon-star-empty right" %>
+	<% if @like.present? %>
+		<%= link_to "", unlike_topic_path(:topic_id => params[:id]), :method => :post, :class => "btn btn-danger btn-lg glyphicon glyphicon-thumbs-down right" %>
 	<% else %>
-		<%= link_to "", favorite_path(:topic_id => params[:id]), :method => :post, :class => "btn btn-primary btn-lg glyphicon glyphicon-star right" %>
+		<%= link_to "", like_topic_path(:topic_id => params[:id]), :method => :post, :class => "btn btn-primary btn-lg glyphicon glyphicon-thumbs-up right" %>
+	<% end %>
+	<% if @favorite.present? %>
+		<%= link_to "", favorite_path(:topic_id => params[:id]), :method => :delete, :class => "btn btn-danger btn-lg glyphicon glyphicon-star-empty " %>
+	<% else %>
+		<%= link_to "", favorite_path(:topic_id => params[:id]), :method => :post, :class => "btn btn-primary btn-lg glyphicon glyphicon-star " %>
 	<% end %>
 </h1> 
 <p><%= @topic.content %></p>
