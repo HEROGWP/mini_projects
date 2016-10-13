@@ -103,14 +103,16 @@ class TopicsController < ApplicationController
     @category = Category.find_by(:name => params[:category])
     
     if params[:category] && params[:order] == "latest_comment"
-			@topics = @category.topics.joins(:comments).order("comments.updated_at DESC").group("id")
+			@topics = @category.topics.joins(:comments).group("id").order("comments.updated_at DESC")
+			#@topics = @category.topics.includes(:comments).order("comments.updated_at")
     elsif params[:category]
-			@topics = @category.topics.order("#{order_by}")
+			@topics = @category.topics.includes(:comments).order("#{order_by}")
 	  else
     	if params[:order] == "latest_comment"
-				@topics = Topic.joins(:comments).order("comments.updated_at DESC").group("id")
+				@topics = Topic.joins(:comments).group("id").order("comments.updated_at DESC")
+				#@topics = Topic.includes(:comments).order("comments.updated_at DESC")
 			else
-    		@topics = Topic.order("#{order_by}")
+    		@topics = Topic.includes(:comments).order("#{order_by}")
 			end
 		end
 
