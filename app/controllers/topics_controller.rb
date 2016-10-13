@@ -1,8 +1,9 @@
 class TopicsController < ApplicationController
 	before_action :authenticate_user!
 	before_action :set_topics, :only => [:index, :create, :update, :destroy]
-	before_action :set_topic, :only => [:show, :update, :destroy]
+	before_action :set_topic, :only => [:show, :update, :destroy, :like, :unlike]
 	before_action :categories, :only => [:index, :create, :update]
+	before_action :set_users, :only => [:show, :like, :unlike]
 
 	def index
 		if params[:id]
@@ -15,7 +16,6 @@ class TopicsController < ApplicationController
 		set_pagination
 	end
 	def show
-		@users = @topic.like_users
 		@favorite = current_user.favorites.find_by(:topic_id => params[:id])
 		@like = current_user.likes.find_by(:topic_id => params[:id])
 		@topic.views += 1
@@ -94,14 +94,19 @@ class TopicsController < ApplicationController
 		else
 			flash[:alert] = "faild to create"
 		end
-		redirect_to :back
+		respond_to do |format|
+			format.js
+		end
 	end
 
 	def unlike
 		@like = current_user.likes.find_by(:topic_id => params[:topic_id])
 		@like.destroy
+		@like = nil
 		flash[:notice] = "success remove to likes"
-		redirect_to :back
+		respond_to do |format|
+			format.js
+		end
 	end
 
 	private
@@ -177,5 +182,9 @@ class TopicsController < ApplicationController
 
 	def categories
 		@categories = Category.all
+	end
+
+	def set_users
+		@users = @topic.like_users
 	end
 end

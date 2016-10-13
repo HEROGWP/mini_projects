@@ -1,0 +1,7 @@
+var like = "<%= j render(:partial => "like_or_unlike") %>";
+$("#like").remove();
+$("h1").append(like);
+
+var who_likes = "<%= j render(:partial => "who_likes") %>";
+$(".likes_picture").remove();
+$("#clear").before(who_likes);
