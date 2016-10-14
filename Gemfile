@@ -35,6 +35,7 @@ gem 'nokogiri'
 gem "kaminari"
 gem "devise"
 gem 'gravtastic'
+gem 'omniauth-facebook'
 
 
 group :production do
