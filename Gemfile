@@ -36,6 +36,7 @@ gem "kaminari"
 gem "devise"
 gem 'gravtastic'
 gem 'omniauth-facebook'
+gem "paperclip", "~> 5.0.0"
 
 
 group :production do
