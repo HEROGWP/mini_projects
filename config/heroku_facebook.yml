@@ -1,0 +1,3 @@
+production:
+  app_id: <%=ENV['APP_ID']%>
+  secret: <%=ENV['SECRET']%>
