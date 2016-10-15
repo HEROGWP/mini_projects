@@ -52,7 +52,7 @@ class CommentsController < ApplicationController
 	private
 
 	def comment_params
-		params.require(:comment).permit(:content, :status)
+		params.require(:comment).permit(:content, :status, :picture)
 	end
 
 	def set_comments

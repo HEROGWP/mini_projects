@@ -31,25 +31,30 @@
 <% end %>
 
 
+<hr style="height:2px;border:none;color:#333;background-color:#333;" />
 
-<%= form_for @comment, :url => @url, method: @action do |t|%>
+<%= form_for @comment, :url => @url, method: @action do |c|%>
 	<div class="form-group">
-		<%= t.label :status, "Status:" %>
-		<%= t.select :status, [["Pubilshed", "published"], ["Draft", "draft"]]  %>	
+		<%= c.label :status, "Status:" %>
+		<%= c.select :status, [["Pubilshed", "published"], ["Draft", "draft"]]  %>	
 	</div>
 	<div class="form-group">
-		<%= t.label :content, "Content:" %>
-		<%= t.text_area :content, :class => "form-control" %>
+		<%= c.file_field :picture %>
+	</div>
+	<div class="form-group">
+		<%= c.label :content, "Content:" %>
+		<%= c.text_area :content, :class => "form-control" %>
 	</div>
 
 <!-- 	<%= hidden_field_tag :page, params[:page] %> -->
-	<%= t.submit @submit_name, :class => "btn btn-primary" %>
+	<%= c.submit @submit_name, :class => "btn btn-primary" %>
 <% end %>
 
 <hr style="height:2px;border:none;color:#333;background-color:#333;" />
 
 <table class="table table-hover">
 	<tr>
+		<th></th>
 		<th>Comment</th>
 		<th>Update_at</th>
 		<th>
@@ -58,6 +63,7 @@
 	</tr>
 	<% @comments.each do |c| %>
 			<tr>
+				<td><%= image_tag c.picture.url(:thumb) %></td>
 				<td><%= truncate(c.content, :length => 100) %></td>
 				<td><%= "Updated by " %> 
 				<% if c.user.profile %>
