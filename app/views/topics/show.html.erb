@@ -50,39 +50,7 @@
 	<%= c.submit @submit_name, :class => "btn btn-primary" %>
 <% end %>
 
-<hr style="height:2px;border:none;color:#333;background-color:#333;" />
+<hr id="before-table" style="height:2px;border:none;color:#333;background-color:#333;" />
 
-<table class="table table-hover">
-	<tr>
-		<th></th>
-		<th>Comment</th>
-		<th>Update_at</th>
-		<th>
-			<%= link_to "", topic_path(@topic, :status => :published), :class => "btn btn-success glyphicon glyphicon-eye-open"%>
-			<%= link_to "", topic_path(@topic, :status => :draft), :class => "btn btn-warning glyphicon glyphicon-eye-close" %></th>
-	</tr>
-	<% @comments.each do |c| %>
-			<tr>
-				<td><%= image_tag c.picture.url(:thumb) %></td>
-				<td><%= truncate(c.content, :length => 100) %></td>
-				<td><%= "Updated by " %> 
-				<% if c.user.profile %>
-					<%= link_to "#{c.user.email}", profile_path(:id => c.user.profile) %>
-				<% else %>
-					<%= c.user.email %>
-				<% end %>
-				<%= " at " + time_ago_in_words(c.updated_at) + " ago" %>
-				</td>
-				<td>
-					<% if current_user == c.user || current_user.admin? %>
-						<%= link_to "", topic_path(@topic, :comment_id => c, :page => params[:page], :status => params[:status]), :class => "btn btn-primary glyphicon glyphicon-pencil" %>
-						<%= link_to "", topic_comment_path(@topic,c, :page => params[:page], :status => params[:status]), :method => :delete, :class => "btn btn-danger glyphicon glyphicon-trash" %>
-					<% end %>
-				</td>
-			</tr>
-	
-	<% end %>
-</table>
-
-<div style="float: left;"><%= paginate @comments %></div>
+<%= render(:partial => "comments_table")  %>
 <div style="float: right; margin-top: 15px; "><%= link_to "",topics_path, :class => "btn btn-lg btn-info glyphicon glyphicon-share-alt"%></div>

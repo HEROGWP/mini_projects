@@ -32,7 +32,7 @@ class TopicsController < ApplicationController
 			@submit_name = "Create"
 		end
 
-		
+		@topic_id = params[:id]
 		@comments = @topic.comments.includes(:user => [:profile]).order("updated_at DESC").page(params[:page]).per(5)
 
 		if current_user.admin? && params[:status] == "draft"

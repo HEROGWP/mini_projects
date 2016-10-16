@@ -45,8 +45,26 @@ class CommentsController < ApplicationController
 		else
 			flash[:alert] = "failed to delete"
 		end
+		@topic = Topic.find(params[:topic_id])
+		@comments = @topic.comments.includes(:user => [:profile]).order("updated_at DESC")
+
+		if current_user.admin? && params[:status] == "draft"
+			@comments = @comments.where(:status => "draft")
+		elsif params[:status] == "draft"
+			@comments = @comments.where(:status => "draft", :user_id => current_user.id)
+		else
+			@comments = @comments.where(:status => "published")
+		end
+		@topic_id = params[:topic_id]
 		set_pagination
-		redirect_to topic_path(params[:topic_id],:page => @page, :status => @comment.status)
+		if @jump
+			redirect_to topic_path(params[:topic_id],:page => @page, :status => @comment.status)
+		else
+			respond_to do |format|
+				format.js
+			end
+		end
+			
 	end
 
 	private
@@ -82,6 +100,7 @@ class CommentsController < ApplicationController
 	def set_page(comment)
 		count = @comments.find_index(comment) + 1
 		if @comments.last == comment && ( count % 5 == 1)
+			@jump = "jump"
 			@page = count / 5
 		elsif (count % 5 ) == 0
 			@page = count / 5 
