@@ -1,9 +1,9 @@
 class TopicsController < ApplicationController
 	before_action :authenticate_user!
 	before_action :set_topics, :only => [:index, :create, :update, :destroy]
-	before_action :set_topic, :only => [:show, :update, :destroy, :like, :unlike]
+	before_action :set_topic, :only => [:show, :update, :destroy, :like, :unlike, :change_subscribe]
 	before_action :categories, :only => [:index, :create, :update]
-	before_action :set_users, :only => [:show, :like, :unlike]
+	before_action :set_users, :only => [:show, :like, :unlike, :change_subscribe]
 
 	def index
 		if params[:id]
@@ -18,6 +18,7 @@ class TopicsController < ApplicationController
 	def show
 		@favorite = current_user.favorites.find_by(:topic_id => params[:id])
 		@like = current_user.likes.find_by(:topic_id => params[:id])
+		@subscribe = current_user.subscribes.find_by(:topic_id => params[:id])
 		@topic.views += 1
 		@topic.save
 		if params[:id] && params[:comment_id]
@@ -104,6 +105,20 @@ class TopicsController < ApplicationController
 		@like.destroy
 		@like = nil
 		flash[:notice] = "success remove to likes"
+		respond_to do |format|
+			format.js
+		end
+	end
+
+	def change_subscribe
+		@subscribe = current_user.subscribes.find_by(:topic_id => params[:topic_id])
+		if @subscribe
+			@subscribe.destroy
+			@subscribe = nil
+		else
+			@subscribe = current_user.subscribes.build(:topic_id => params[:topic_id])
+			@subscribe.save
+		end
 		respond_to do |format|
 			format.js
 		end

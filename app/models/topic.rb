@@ -8,6 +8,8 @@ class Topic < ApplicationRecord
 	has_many :likes, :dependent => :destroy
 	has_many :like_users, :through => :likes, :source => :user
 
+  has_many :subscribes, :dependent => :destroy
+
 	has_attached_file :picture, styles: { medium: "100x100>", thumb: "50x50>" }, default_url: "/default/missing.JPG"
   validates_attachment_content_type :picture, content_type: /\Aimage\/.*\z/
 end

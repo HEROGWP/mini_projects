@@ -11,7 +11,9 @@
 <%= render(:partial => "who_likes") %>
 
 <div style="clear: both;" id="clear"></div>
+
 <h1>
+	<%= render(:partial => "change_subscribe") %>
 	<%= @topic.title %>
 	
 	<% if @favorite.present? %>

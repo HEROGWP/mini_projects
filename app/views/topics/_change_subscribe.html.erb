@@ -1,0 +1,5 @@
+<% if @subscribe %>
+	<%= link_to "", change_subscribe_topic_path(:topic_id => params[:id]), :method => :post, :class => "btn btn-danger btn-lg glyphicon glyphicon-pushpin left", :remote => true, :id => "change_subscribe"%>
+<% else %>
+	<%= link_to "", change_subscribe_topic_path(:topic_id => params[:id]), :method => :post, :class => "btn btn-info btn-lg glyphicon glyphicon-pushpin left", :remote => true, :id => "change_subscribe" %>
+<% end %>
