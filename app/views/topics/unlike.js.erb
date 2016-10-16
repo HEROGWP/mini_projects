@@ -1,4 +1,5 @@
 var content = "<%= j render(:partial => "like_or_unlike") %>";
+$("a.right").remove();
 $("#unlike").remove();
 $("h1").append(content);
 

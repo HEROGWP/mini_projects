@@ -1,5 +1,5 @@
 <% if @like.present? %>
-	<%= link_to "", unlike_topic_path(:topic_id => params[:id]), :method => :post, :class => "btn btn-danger btn-lg glyphicon glyphicon-thumbs-down right", :remote => true, :id => "unlike"%>
+	<%= link_to "#{@topic.likes.count}", unlike_topic_path(:topic_id => params[:id]), :method => :post, :class => "btn btn-danger btn-lg glyphicon glyphicon-thumbs-up right", :remote => true, :id => "unlike"%>
 <% else %>
-	<%= link_to "", like_topic_path(:topic_id => params[:id]), :method => :post, :class => "btn btn-primary btn-lg glyphicon glyphicon-thumbs-up right", :remote => true, :id => "like" %>
+	<%= link_to "#{@topic.likes.count}", like_topic_path(:topic_id => params[:id]), :method => :post, :class => "btn btn-primary btn-lg glyphicon glyphicon-thumbs-up right", :remote => true, :id => "like" %>
 <% end %>
