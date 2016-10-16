@@ -2,7 +2,9 @@ class ProfilesController < ApplicationController
 	before_action :authenticate_user!
 
 	def show
-		@profile = Profile.find(params[:id])
+		@user = User.where("email like ?", "%#{params[:user]}%").first
+		
+		@profile = @user.profile
 		@topics = @profile.user.topics
 		@comments = @profile.user.comments.includes(:topic)
 	end

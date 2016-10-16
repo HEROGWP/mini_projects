@@ -59,7 +59,7 @@
 			<td><%= link_to "#{truncate(t.title, :length => 40)}", topic_path(t) %></td>
 			<td><%= truncate(t.content, :length => 10) %></td>
 			<% if t.user.profile %>
-				<td><%= link_to "#{t.user.email}", profile_path(:id => t.user.profile) %></td>
+				<td><%= link_to "#{t.user.email}", "/profile/#{t.user.user_name}" %></td>
 			<% else %>
 				<td><%= t.user.email %></td>
 			<% end %>
