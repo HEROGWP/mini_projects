@@ -30,14 +30,16 @@
             <%= link_to "HEROGWP", "https://www.facebook.com/HEROGWP", :class => "navbar-brand" %>
           <% end %>
         </div>
-            
+        <%= form_tag topics_path, :method => :get, :class => "navbar-form navbar-left" do %>
+          <%= text_field_tag "tag", nil, :class => "form-control", placeholder: 'Enter search tag...' %>
+          <%= submit_tag "search", :class => "btn btn-default" %>
+        <% end %>
         <!-- 手機隱藏選單區 -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             
           <!-- 右選單 -->
           <ul class="nav navbar-nav navbar-right">
             <% if current_user %>
-              <li><%= link_to "#{current_user.email}", "/profile/#{current_user.user_name}" %></li>
               <li><%= link_to('登出', destroy_user_session_path, :method => :delete) %></li>
               <li><%= link_to('修改密碼', edit_registration_path(:user)) %></li>
             <% else %>

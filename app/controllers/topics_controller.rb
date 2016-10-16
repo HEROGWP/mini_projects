@@ -127,7 +127,7 @@ class TopicsController < ApplicationController
 	private
 
 	def topic_params
-		params.require(:topic).permit(:title, :content, :status, :picture, :category_ids => [])
+		params.require(:topic).permit(:title, :content, :status, :picture, :tag, :category_ids => [])
 	end
 
 	def set_topics
@@ -156,6 +156,9 @@ class TopicsController < ApplicationController
 			end
 		end
 
+		if !params[:tag].blank?
+			@topics = @topics.where("tag like ?", "%#{params[:tag]}%")
+		end
 
 		if current_user.admin? && params[:status] == "draft"
 			@topics = @topics.where(:status => params[:status])
