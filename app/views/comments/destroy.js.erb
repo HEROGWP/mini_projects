@@ -1,7 +1,7 @@
 var comments_table = "<%= j render(:partial => "topics/comments_table") %>";
 
 $("table").remove();
-$(".left").remove();
+$(".paginate").remove();
 
 $("#before-table").after(comments_table);
 

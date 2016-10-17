@@ -40,7 +40,7 @@
 
 <hr style="height:2px;border:none;color:#333;background-color:#333;" />
 
-<%= form_for @comment, :url => @url, method: @action do |c|%>
+<%= form_for @comment, :url => @url, method: @action, :remote => true do |c|%>
 	<div class="form-group">
 		<%= c.label :status, "Status:" %>
 		<%= c.select :status, [["Pubilshed", "published"], ["Draft", "draft"]]  %>	

@@ -1,23 +1,26 @@
 class CommentsController < ApplicationController
 	before_action :authenticate_user!
-	before_action :set_comments
-	before_action :set_comment, :only => [:update, :destroy]
 	before_action :set_topic
+	before_action :set_comment, :only => [:update, :destroy]
+	before_action :set_comments, :except => [:create]
+	
 
 	def create
 		@comment = @topic.comments.build(comment_params)
 		@comment.user = current_user
 		if @comment.save
-			flash[:notice] = "success to create"
+			@status = "success"
 		else
 			@url = topic_comments_path(@topic)
 			@action = "post"
 			@submit_name = "Create"
-			flash[:alert] = "failed to create"
-
+			@status = "faild"
 		end
+		set_comments
 		set_pagination
-		redirect_to topic_path(params[:topic_id], :status => @comment.status)
+		respond_to do |format|
+			format.js
+		end
 
 	end
 
@@ -45,17 +48,7 @@ class CommentsController < ApplicationController
 		else
 			flash[:alert] = "failed to delete"
 		end
-		@topic = Topic.find(params[:topic_id])
-		@comments = @topic.comments.includes(:user => [:profile]).order("updated_at DESC")
-
-		if current_user.admin? && params[:status] == "draft"
-			@comments = @comments.where(:status => "draft")
-		elsif params[:status] == "draft"
-			@comments = @comments.where(:status => "draft", :user_id => current_user.id)
-		else
-			@comments = @comments.where(:status => "published")
-		end
-		@topic_id = params[:topic_id]
+		
 		set_pagination
 		if @jump
 			redirect_to topic_path(params[:topic_id],:page => @page, :status => @comment.status)
@@ -74,15 +67,16 @@ class CommentsController < ApplicationController
 	end
 
 	def set_comments
-		@comments = Topic.find(params[:topic_id]).comments.order("updated_at DESC")
+		@comments = @topic.comments.includes(:user => [:profile]).order("updated_at DESC")
 
-		if current_user.admin? && params[:status] == "draft"
-			@comments = @comments.where(:status => params[:status])
-		elsif params[:status] == "draft"
+		if current_user.admin? && @comment.status == "draft"
+			@comments = @comments.where(:status => "draft")
+		elsif @comment.status == "draft"
 			@comments = @comments.where(:status => "draft", :user_id => current_user.id)
 		else
 			@comments = @comments.where(:status => "published")
 		end
+		@topic_id = params[:topic_id]
 	end
 	
 	def set_pagination

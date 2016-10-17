@@ -30,4 +30,4 @@
 	<% end %>
 </table>
 
-<div class="left"><%= paginate @comments, :params => {:controller => 'topics', :action => 'show', :id => @topic_id} %></div>
+<div class="left paginate"><%= paginate @comments, :params => {:controller => 'topics', :action => 'show', :id => @topic_id} %></div>

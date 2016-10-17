@@ -1,0 +1,16 @@
+<% if @status == "success"%>
+	var flash = "<div class='alert alert-success' role='alert'>success to create</div>";
+<% else %>
+	var flash = "<div class='alert alert-danger' role='alert'>faild to create</div>";
+<% end %>
+
+var comments_table = "<%= j render(:partial => "topics/comments_table") %>";
+
+$("table").remove();
+$(".paginate").remove();
+$(".alert").remove();
+
+
+$(".col-md-12").prepend(flash);
+$("#before-table").after(comments_table);
+
