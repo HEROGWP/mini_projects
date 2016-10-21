@@ -16,7 +16,6 @@ class ApplicationRecord < ActiveRecord::Base
   def destroy_pictures(photos)
   	unless self.pictures.blank?
   		self.pictures.destroy_all
-  		byebug
   	end
   end
 end
