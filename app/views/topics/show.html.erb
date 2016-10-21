@@ -23,12 +23,23 @@
 	<% end %>
 	<%= render(:partial => "like_or_unlike") %>
 </h1> 
-<p><%= @topic.content %></p>
-<% if !@topic.tag.blank? %>
-	<% tags(@topic.tag).each do |tag| %>
-		<%= link_to tag, topics_path(:tag => tag ), :class => "label label-info" %>
-	<% end %>
+
+<% set_topic_images(@topic).each do |picture_url| %>
+	<div class="topic_div_set">
+		<%= image_tag picture_url, :class => "image" %>
+	</div>
 <% end %>
+<div></div>
+<div class="topic_div_set description">
+	<p ><%= @topic.content %></p>
+</div>
+<div class="topic_div_set description">
+	<% if !@topic.tag.blank? %>
+		<% tags(@topic.tag).each do |tag| %>
+			<%= link_to tag, topics_path(:tag => tag ), :class => "label label-info" %>
+		<% end %>
+	<% end %>
+</div>
 <% if @comment.errors.any? %>
     <div class="alert alert-warning" role="alert">
       <% @comment.errors.full_messages.each do |msg| %>
@@ -46,7 +57,7 @@
 		<%= c.select :status, [["Pubilshed", "published"], ["Draft", "draft"]]  %>	
 	</div>
 	<div class="form-group">
-		<%= c.file_field :picture %>
+		<%= file_field_tag "photos[]", multiple: true %>
 	</div>
 	<div class="form-group">
 		<%= c.label :content, "Content:" %>

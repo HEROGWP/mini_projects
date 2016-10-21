@@ -38,6 +38,8 @@ gem 'gravtastic'
 gem 'omniauth-facebook'
 gem "paperclip", "~> 5.0.0"
 
+#let ajax can upload picture
+gem 'remotipart', '~> 1.0'
 
 group :production do
 	gem 'pg'

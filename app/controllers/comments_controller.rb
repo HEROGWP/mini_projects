@@ -9,6 +9,7 @@ class CommentsController < ApplicationController
 		@comment = @topic.comments.build(comment_params)
 		@comment.user = current_user
 		if @comment.save
+			@comment.create_pictures(params[:photos])
 			@status = "success"
 		else
 			@url = topic_comments_path(@topic)
@@ -27,6 +28,10 @@ class CommentsController < ApplicationController
 	def update
 		@comment = @topic.comments.find(params[:id])
 		if @comment.update(comment_params) && (current_user == @comment.user || current_user.admin?)
+			
+			@comment.destroy_pictures(params[:photos])
+			@comment.create_pictures(params[:photos])
+
 			flash[:notice] = "success to update"
 			
 		else
@@ -63,7 +68,7 @@ class CommentsController < ApplicationController
 	private
 
 	def comment_params
-		params.require(:comment).permit(:content, :status, :picture)
+		params.require(:comment).permit(:content, :status)
 	end
 
 	def set_comments

@@ -10,6 +10,6 @@ class Topic < ApplicationRecord
 
   has_many :subscribes, :dependent => :destroy
 
-	has_attached_file :picture, styles: { medium: "200x200>", thumb: "50x50>" }, default_url: "/default/missing.JPG"
-  validates_attachment_content_type :picture, content_type: /\Aimage\/.*\z/
+  has_many :pictures, :as => :picturetable, :dependent => :destroy
+	
 end

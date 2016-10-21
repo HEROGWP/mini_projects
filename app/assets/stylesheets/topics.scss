@@ -1,3 +1,21 @@
 // Place all the styles related to the topics controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.topic_div_set{
+	display: inline-block;
+	height: 204px;
+	vertical-align: middle;
+	text-align: center;
+	margin: 0 5px;
+	border-radius: 5%;
+
+}
+.image{
+	border-radius: 50%;
+}
+.description{
+	background-color: rgba(0, 113, 178, 0.2);
+	width: 550px;
+	padding-top: 20px;
+
+}

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161016130242) do
+ActiveRecord::Schema.define(version: 20161020053337) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -22,13 +22,9 @@ ActiveRecord::Schema.define(version: 20161016130242) do
     t.text     "content"
     t.integer  "user_id"
     t.integer  "topic_id"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.string   "status",               default: "draft"
-    t.string   "picture_file_name"
-    t.string   "picture_content_type"
-    t.integer  "picture_file_size"
-    t.datetime "picture_updated_at"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.string   "status",     default: "draft"
     t.index ["topic_id"], name: "index_comments_on_topic_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
@@ -49,6 +45,18 @@ ActiveRecord::Schema.define(version: 20161016130242) do
     t.datetime "updated_at", null: false
     t.index ["topic_id"], name: "index_likes_on_topic_id"
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "pictures", force: :cascade do |t|
+    t.string   "picturetable_type"
+    t.integer  "picturetable_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
+    t.index ["picturetable_type", "picturetable_id"], name: "index_pictures_on_picturetable_type_and_picturetable_id"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -83,15 +91,11 @@ ActiveRecord::Schema.define(version: 20161016130242) do
     t.string   "title"
     t.text     "content"
     t.integer  "user_id"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.integer  "comments_count",       default: 0
-    t.integer  "views",                default: 0
-    t.string   "status",               default: "draft"
-    t.string   "picture_file_name"
-    t.string   "picture_content_type"
-    t.integer  "picture_file_size"
-    t.datetime "picture_updated_at"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.integer  "comments_count", default: 0
+    t.integer  "views",          default: 0
+    t.string   "status",         default: "draft"
     t.string   "tag"
     t.index ["tag"], name: "index_topics_on_tag"
     t.index ["user_id"], name: "index_topics_on_user_id"

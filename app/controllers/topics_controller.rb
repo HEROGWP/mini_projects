@@ -34,7 +34,7 @@ class TopicsController < ApplicationController
 		end
 
 		@topic_id = params[:id]
-		@comments = @topic.comments.includes(:user => [:profile]).order("updated_at DESC").page(params[:page]).per(5)
+		@comments = @topic.comments.includes(:pictures, :user => [:profile]).order("updated_at DESC").page(params[:page]).per(5)
 
 		if current_user.admin? && params[:status] == "draft"
 			@comments = @comments.where(:status => "draft")
@@ -47,7 +47,10 @@ class TopicsController < ApplicationController
 	end
 	def create
 		@topic = current_user.topics.build(topic_params)
+		
 		if @topic.save
+			@topic.create_pictures(params[:photos])
+
 			flash[:notice] = "success to create"
 			set_topics_when_create(@topic)
 			@count = @topics.size
@@ -64,6 +67,10 @@ class TopicsController < ApplicationController
 	def update
 		@topic = Topic.find(params[:id])
 		if @topic.update(topic_params) && (current_user == @topic.user || current_user.admin?)
+
+			@topic.destroy_pictures(params[:photos])
+			@topic.create_pictures(params[:photos])
+			
 			flash[:notice] = "success to update"
 			redirect_to topics_path(:page => @page, :status => @topic.status)
 		else
@@ -127,7 +134,7 @@ class TopicsController < ApplicationController
 	private
 
 	def topic_params
-		params.require(:topic).permit(:title, :content, :status, :picture, :tag, :category_ids => [])
+		params.require(:topic).permit(:title, :content, :status, :tag, :category_ids => [])
 	end
 
 	def set_topics
@@ -143,16 +150,16 @@ class TopicsController < ApplicationController
     @category = Category.find_by(:name => params[:category])
     
     if params[:category] && params[:order] == "latest_comment"
-			@topics = @category.topics.joins(:comments).group("id").order("comments.updated_at DESC")
+			@topics = @category.topics.joins(:comments, :pictures).group("id").order("comments.updated_at DESC")
 			#@topics = @category.topics.includes(:comments).order("comments.updated_at")
     elsif params[:category]
-			@topics = @category.topics.includes(:comments).order("#{order_by}")
+			@topics = @category.topics.includes(:comments, :pictures).order("#{order_by}")
 	  else
     	if params[:order] == "latest_comment"
-				@topics = Topic.joins(:comments).group("id").order("comments.updated_at DESC")
+				@topics = Topic.joins(:comments, :pictures).group("id").order("comments.updated_at DESC")
 				#@topics = Topic.includes(:comments).order("comments.updated_at DESC")
 			else
-    		@topics = Topic.includes(:comments).order("#{order_by}")
+    		@topics = Topic.includes(:comments, :pictures).order("#{order_by}")
 			end
 		end
 
