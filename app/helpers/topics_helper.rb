@@ -3,19 +3,19 @@ module TopicsHelper
   	tag.split(" ")
   end
 
-  def set_topic_images(topic)
+  def set_topic_images(topic, style)
 		if topic.pictures.blank?
-			pictures = ["/default/medium.JPG"]
+			pictures = ["/images/#{style}/missing.JPG"]
 		else
-			pictures = topic.pictures.map{ |picture| picture.photo.url(:medium)}
+			pictures = topic.pictures.map{ |picture| picture.photo.url(style)}
 		end
 	end
 
-	def set_image(source)
+	def set_image(source, style)
 		if source.pictures.blank?
-			return "/default/thumb.JPG"
+			return "/images/#{style}/missing.JPG"
 		else
-			return source.pictures.first.photo.url(:thumb)
+			return source.pictures.first.photo.url(style)
 		end
 	end
 end

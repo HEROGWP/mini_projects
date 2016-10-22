@@ -6,7 +6,7 @@
     <meta property="og:type"          content="website" />
     <meta property="og:title"         content="<%= @topic.title %>" />
     <meta property="og:description"   content="<%= @topic.content %>" />
-    <meta property="og:image"         content="<%= request.original_url + set_image(@topic) %>" />
+    <meta property="og:image"         content="https://<%= request.host_with_port + set_image(@topic, "medium") %>" />
     <meta property="fb:app_id" content="310178242697156" />
     <%= csrf_meta_tags %>
 

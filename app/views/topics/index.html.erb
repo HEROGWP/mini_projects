@@ -59,7 +59,7 @@
 	</tr>
 	<% @topics.each do |t| %>
 		<tr>
-			<td><%= image_tag set_image(t) %></td>
+			<td><%= image_tag set_image(t, "thumb") %></td>
 			<td><%= link_to "#{truncate(t.title, :length => 40)}", topic_path(t) %></td>
 			<td><%= truncate(t.content, :length => 10) %></td>
 			<% if t.user.profile %>

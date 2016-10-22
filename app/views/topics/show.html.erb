@@ -24,7 +24,7 @@
 	<%= render(:partial => "like_or_unlike") %>
 </h1> 
 
-<% set_topic_images(@topic).each do |picture_url| %>
+<% set_topic_images(@topic, "small").each do |picture_url| %>
 	<div class="topic_div_set">
 		<%= image_tag picture_url, :class => "image" %>
 	</div>

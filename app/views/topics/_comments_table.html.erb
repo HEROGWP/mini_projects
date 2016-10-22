@@ -9,7 +9,7 @@
 	</tr>
 	<% @comments.each do |c| %>
 			<tr>
-				<td><%= image_tag set_image(c) %></td>
+				<td><%= image_tag set_image(c, "thumb") %></td>
 				<td><%= truncate(c.content, :length => 100) %></td>
 				<td><%= "Updated by " %> 
 				<% if c.user.profile %>
