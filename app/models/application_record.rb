@@ -18,4 +18,12 @@ class ApplicationRecord < ActiveRecord::Base
   		self.pictures.destroy_all
   	end
   end
+
+  def self.change_status
+    self.where(:status => "scheduled").each do |schedule|
+      if Time.now > schedule.publish_time
+        schedule.update(:status => "published")
+      end
+    end
+  end
 end

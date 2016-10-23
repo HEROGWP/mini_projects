@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161020053337) do
+ActiveRecord::Schema.define(version: 20161022134758) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -22,9 +22,10 @@ ActiveRecord::Schema.define(version: 20161020053337) do
     t.text     "content"
     t.integer  "user_id"
     t.integer  "topic_id"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.string   "status",     default: "draft"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.string   "status",       default: "draft"
+    t.datetime "publish_time"
     t.index ["topic_id"], name: "index_comments_on_topic_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
@@ -97,6 +98,7 @@ ActiveRecord::Schema.define(version: 20161020053337) do
     t.integer  "views",          default: 0
     t.string   "status",         default: "draft"
     t.string   "tag"
+    t.datetime "publish_time"
     t.index ["tag"], name: "index_topics_on_tag"
     t.index ["user_id"], name: "index_topics_on_user_id"
   end

@@ -5,12 +5,14 @@
 		<th>Update_at</th>
 		<th>
 			<%= link_to "", topic_path(@topic, :status => :published), :class => "btn btn-success glyphicon glyphicon-eye-open"%>
-			<%= link_to "", topic_path(@topic, :status => :draft), :class => "btn btn-warning glyphicon glyphicon-eye-close" %></th>
+			<%= link_to "", topic_path(@topic, :status => :draft), :class => "btn btn-warning glyphicon glyphicon-eye-close" %>
+			<%= link_to "", topic_path(@topic, :status => :scheduled), :class => "btn btn-info glyphicon glyphicon-time" %>
+			</th>
 	</tr>
 	<% @comments.each do |c| %>
 			<tr>
 				<td><%= image_tag set_image(c, "thumb") %></td>
-				<td><%= truncate(c.content, :length => 100) %></td>
+				<td><%= truncate(c.content, :length => 80) %></td>
 				<td><%= "Updated by " %> 
 				<% if c.user.profile %>
 					<%= link_to "#{c.user.email}", "/profile/#{c.user.user_name}" %>

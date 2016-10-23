@@ -23,7 +23,11 @@
 	</div>
 	<div class="form-group">
 		<%= t.label :status, "Status:" %>
-		<%= t.select :status, [["Pubilshed", "published"], ["Draft", "draft"]]  %>	
+		<%= t.select :status, [["Pubilshed", "published"], ["Draft", "draft"], ["Scheduled","scheduled"]]  %>
+	</div>
+	<div class="form-group" id="publish_time"  style="display:none" >
+		<%= t.label :publish_time, "Publish_time:" %>
+		<%= t.datetime_select :publish_time, :ampm => true, :minute_step => 15 %>
 	</div>
 	<div class="form-group">
 		<%= t.label :content, "Content:" %>
@@ -55,6 +59,7 @@
 		<th>
 			<%= link_to "", topics_path(:order => params[:order], :category => params[:category], :status => :published, :tag => params[:tag]), :class => "btn btn-success glyphicon glyphicon-eye-open"%>
 			<%= link_to "", topics_path(:order => params[:order], :category => params[:category], :status => :draft, :tag => params[:tag]), :class => "btn btn-warning glyphicon glyphicon-eye-close" %>
+			<%= link_to "", topics_path(:order => params[:order], :category => params[:category], :status => :scheduled, :tag => params[:tag]), :class => "btn btn-info glyphicon glyphicon-time" %>
 		</th>
 	</tr>
 	<% @topics.each do |t| %>

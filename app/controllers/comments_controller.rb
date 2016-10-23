@@ -68,10 +68,11 @@ class CommentsController < ApplicationController
 	private
 
 	def comment_params
-		params.require(:comment).permit(:content, :status)
+		params.require(:comment).permit(:content, :status, :publish_time)
 	end
 
 	def set_comments
+		Comment.all.change_status
 		@comments = @topic.comments.includes(:user => [:profile]).order("updated_at DESC")
 
 		if current_user.admin? && @comment.status == "draft"

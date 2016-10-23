@@ -16,6 +16,7 @@ class TopicsController < ApplicationController
 		set_pagination
 	end
 	def show
+		Comment.all.change_status
 		@favorite = current_user.favorites.find_by(:topic_id => params[:id])
 		@like = current_user.likes.find_by(:topic_id => params[:id])
 		@subscribe = current_user.subscribes.find_by(:topic_id => params[:id])
@@ -134,10 +135,12 @@ class TopicsController < ApplicationController
 	private
 
 	def topic_params
-		params.require(:topic).permit(:title, :content, :status, :tag, :category_ids => [])
+		params.require(:topic).permit(:title, :content, :status, :tag, :publish_time, :category_ids => [])
 	end
 
 	def set_topics
+		Topic.all.change_status
+
 		if params[:order] == "comments"
       order_by = "comments_count DESC"
     elsif params[:order] == "updated_at"
@@ -171,6 +174,8 @@ class TopicsController < ApplicationController
 			@topics = @topics.where(:status => params[:status])
 		elsif params[:status] == "draft"
 			@topics = @topics.where(:status => "draft", :user_id => current_user.id)
+		elsif params[:status] == "scheduled"
+			@topics = @topics.where("status like ?", params[:status])
 		else
 			@topics = @topics.where(:status => "published")
 		end
