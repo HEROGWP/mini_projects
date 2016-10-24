@@ -1,6 +1,16 @@
 Rails.application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" } 
 
+  resources :friends, only: [:index, :destroy], :controller => "users" do 
+  	member do
+  		post :add
+  		post :change_relationship
+  	end
+
+  	collection do
+  		get :who_add_me
+  	end
+  end
   resource :favorite, only: [:show, :create, :destroy]
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 

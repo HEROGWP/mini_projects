@@ -14,11 +14,7 @@
 				<td><%= image_tag set_image(c, "thumb") %></td>
 				<td><%= truncate(c.content, :length => 80) %></td>
 				<td><%= "Updated by " %> 
-				<% if c.user.profile %>
-					<%= link_to "#{c.user.email}", "/profile/#{c.user.user_name}" %>
-				<% else %>
-					<%= c.user.email %>
-				<% end %>
+				<%= link_to "#{c.user.email}", "/profile/#{c.user.user_name}" %>
 				<%= " at " + time_ago_in_words(c.updated_at) + " ago" %>
 				</td>
 				<td>

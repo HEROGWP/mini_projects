@@ -67,11 +67,7 @@
 			<td><%= image_tag set_image(t, "thumb") %></td>
 			<td><%= link_to "#{truncate(t.title, :length => 40)}", topic_path(t) %></td>
 			<td><%= truncate(t.content, :length => 10) %></td>
-			<% if t.user.profile %>
-				<td><%= link_to "#{t.user.email}", "/profile/#{t.user.user_name}" %></td>
-			<% else %>
-				<td><%= t.user.email %></td>
-			<% end %>
+			<td><%= link_to "#{t.user.email}", "/profile/#{t.user.user_name}" %></td>
 			<td><%= t.comments.size %></td>
 			<td><%= t.views %></td>
 			<td><%= t.comments.last.try(:updated_at)%></td>

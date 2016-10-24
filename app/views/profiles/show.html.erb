@@ -1,6 +1,15 @@
-<h1> <%= @profile.nickname %> </h1>
-<p>Birthday: <span class="label label-primary"><%= @profile.birthday %></span> </p>
-<p>Biography: <span><%= @profile.bio %> </span></p>
+<% if @user != current_user && !is_confirming_friend?(@user) && !is_friend?(@user) %>
+	<%= link_to "add friend", add_friend_path(@user), :method => :post, :class => "btn btn-primary right" %>
+<% elsif is_confirming_friend?(@user) %>
+	<%= link_to "confriming...", "#", :class => "btn btn-warning right" %>
+<% elsif is_friend?(@user) && @user != current_user %>
+	<%= link_to "delete friend", friend_path(@user), :method => :destroy, :class => "btn btn-danger right" %>
+<% end %>
+
+
+<h1> <%= @user.profile_nickname %> </h1>
+<p>Birthday: <span class="label label-primary"><%= @user.profile_birthday %></span> </p>
+<p>Biography: <span><%= @user.profile_bio %> </span></p>
 
 <hr style="height:2px;border:none;color:#333;background-color:#333;" />
 

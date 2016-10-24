@@ -18,6 +18,16 @@ class User < ApplicationRecord
 
   has_many :subscribes, :dependent => :destroy
 
+  has_many :friendships
+  has_many :friends, :through => :friendships
+  has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
+  has_many :inverse_friends, :through => :inverse_friendships, :source => :user
+
+  delegate :nickname, :to => :profile, :prefix => true, :allow_nil => true
+  delegate :birthday, :to => :profile, :prefix => true, :allow_nil => true
+  delegate :bio, :to => :profile, :prefix => true, :allow_nil => true
+
+  
   def admin?
   	self.role == "admin"
   end

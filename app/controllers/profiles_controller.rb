@@ -4,9 +4,8 @@ class ProfilesController < ApplicationController
 	def show
 		@user = User.where("email like ?", "%#{params[:user]}%").first
 		
-		@profile = @user.profile
-		@topics = @profile.user.topics
-		@comments = @profile.user.comments.includes(:topic)
+		@topics = @user.topics
+		@comments = @user.comments.includes(:topic)
 	end
 	
 	def create

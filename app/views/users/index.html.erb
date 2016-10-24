@@ -1,0 +1,15 @@
+<h1>Friends</h1>
+<table class="table table-hover">
+	<thead>
+		<th>nickname</th>
+		<th>Email</th>
+	</thead>
+	<tbody>
+		<% @friends.each do |friend| %>
+			<tr>
+				<td><%= friend.profile_nickname %></td>
+				<td><%= link_to "#{friend.email}", "/profile/#{friend.user_name}" %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

@@ -1,0 +1,42 @@
+<h1>Who add me</h1>
+<table class="table table-hover">
+	<thead>
+		<th>nickname</th>
+		<th>Email</th>
+		<th>Confirm relationship</th>
+	</thead>
+	<tbody>
+		<% @whose.each do |who| %>
+			<tr>
+				<td><%= who.profile_nickname %></td>
+				<td><%= link_to "#{who.email}", "/profile/#{who.user_name}" %></td>
+				<td>
+					<%= link_to "", change_relationship_friend_path(who, :relationship => "confirm"), :method => :post, :class => "btn btn-success glyphicon glyphicon-ok" %>
+					<%= link_to "", change_relationship_friend_path(who, :relationship => "ignore"), :method => :post, :class => "btn btn-danger glyphicon glyphicon-remove" %>
+				</td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<hr style="height:2px;border:none;color:#333;background-color:#333;" />
+<h2>I ignore</h2>
+<table class="table table-hover">
+	<thead>
+		<th>nickname</th>
+		<th>Email</th>
+		<th>Confirm relationship</th>
+	</thead>
+	<tbody>
+		<% @whose_ignore.each do |who| %>
+			<tr>
+				<td><%= who.profile_nickname %></td>
+				<td><%= link_to "#{who.email}", "/profile/#{who.user_name}" %></td>
+				<td>
+					<%= link_to "", change_relationship_friend_path(who, :relationship => "confirm"), :method => :post, :class => "btn btn-success glyphicon glyphicon-ok" %>
+					<%= link_to "", change_relationship_friend_path(who, :relationship => "ignore"), :method => :post, :class => "btn btn-danger glyphicon glyphicon-remove" %>
+				</td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
