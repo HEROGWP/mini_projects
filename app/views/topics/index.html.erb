@@ -22,6 +22,10 @@
 		<%= t.collection_check_boxes(:category_ids, Category.all, :id, :name)%>
 	</div>
 	<div class="form-group">
+		<%= t.label :permission, "Permission:" %>
+		<%= t.select :permission, [["All user can see and comments", "can see and comments"],["Other user can see, but can not comments", "can not comments"], ["Other user is my friend can see and comments", "can comments"]]  %>
+	</div>
+	<div class="form-group">
 		<%= t.label :status, "Status:" %>
 		<%= t.select :status, [["Pubilshed", "published"], ["Draft", "draft"], ["Scheduled","scheduled"]]  %>
 	</div>

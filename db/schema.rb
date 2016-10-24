@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161023113127) do
+ActiveRecord::Schema.define(version: 20161024175247) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(version: 20161023113127) do
     t.string   "status",         default: "draft"
     t.string   "tag"
     t.datetime "publish_time"
+    t.string   "permission"
     t.index ["tag"], name: "index_topics_on_tag"
     t.index ["user_id"], name: "index_topics_on_user_id"
   end

@@ -48,29 +48,30 @@
     </div>
 <% end %>
 
+<% if @topic.permission != "can not comments" || @topic.user == current_user ||  is_friend?(@topic.user)%>
+	<hr style="height:2px;border:none;color:#333;background-color:#333;" />
+	<%= form_for @comment, :url => @url, method: @action, :remote => true do |c|%>
+		<div class="form-group">
+			<%= c.label :status, "Status:" %>
+			<%= c.select :status, [["Pubilshed", "published"], ["Draft", "draft"], ["Scheduled","scheduled"]]  %>
+		</div>
+		<div class="form-group" id="publish_time"  style="display:none" >
+			<%= c.label :publish_time, "Publish_time:" %>
+			<%= c.datetime_select :publish_time, :ampm => true, :minute_step => 15 %>
+		</div>
+		<div class="form-group">
+			<%= file_field_tag "photos[]", multiple: true %>
+		</div>
+		<div class="form-group">
+			<%= c.label :content, "Content:" %>
+			<%= c.text_area :content, :class => "form-control" %>
+		</div>
 
-<hr style="height:2px;border:none;color:#333;background-color:#333;" />
-
-<%= form_for @comment, :url => @url, method: @action, :remote => true do |c|%>
-	<div class="form-group">
-		<%= c.label :status, "Status:" %>
-		<%= c.select :status, [["Pubilshed", "published"], ["Draft", "draft"], ["Scheduled","scheduled"]]  %>
-	</div>
-	<div class="form-group" id="publish_time"  style="display:none" >
-		<%= c.label :publish_time, "Publish_time:" %>
-		<%= c.datetime_select :publish_time, :ampm => true, :minute_step => 15 %>
-	</div>
-	<div class="form-group">
-		<%= file_field_tag "photos[]", multiple: true %>
-	</div>
-	<div class="form-group">
-		<%= c.label :content, "Content:" %>
-		<%= c.text_area :content, :class => "form-control" %>
-	</div>
-
-<!-- 	<%= hidden_field_tag :page, params[:page] %> -->
-	<%= c.submit @submit_name, :class => "btn btn-primary" %>
+	<!-- 	<%= hidden_field_tag :page, params[:page] %> -->
+		<%= c.submit @submit_name, :class => "btn btn-primary" %>
+	<% end %>
 <% end %>
+
 
 <hr id="before-table" style="height:2px;border:none;color:#333;background-color:#333;" />
 
