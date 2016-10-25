@@ -38,12 +38,12 @@ gem 'gravtastic'
 gem 'omniauth-facebook'
 gem "paperclip", "~> 5.0.0"
 
+
 #let ajax can upload picture
 gem 'remotipart', '~> 1.0'
 
 group :production do
-	gem 'pg'
-	gem 'rails_12factor'
+	gem "mysql2"
 end
 
 group :development, :test do
@@ -60,6 +60,9 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+
+  gem 'capistrano-rails'
+  gem 'capistrano-passenger'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
