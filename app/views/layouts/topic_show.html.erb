@@ -31,13 +31,14 @@
             <%= link_to "HEROGWP", "https://www.facebook.com/HEROGWP", :class => "navbar-brand" %>
           <% end %>
         </div>
-        <%= form_tag topics_path, :method => :get, :class => "navbar-form navbar-left" do %>
-          <%= text_field_tag "tag", nil, :class => "form-control", placeholder: 'Enter search tag...' %>
-          <%= submit_tag "search", :class => "btn btn-default" %>
-        <% end %>
         <!-- 手機隱藏選單區 -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
-            
+          <% if current_user %>  
+            <%= form_tag topics_path, :method => :get, :class => "navbar-form navbar-left search" do %>
+             <%= text_field_tag "tag", nil, :class => "form-control", placeholder: 'Enter search tag...' %>
+              <%= submit_tag "search", :class => "btn btn-default" %>
+            <% end %>
+          <% end %>
           <!-- 右選單 -->
           <ul class="nav navbar-nav navbar-right">
             <% if current_user %>

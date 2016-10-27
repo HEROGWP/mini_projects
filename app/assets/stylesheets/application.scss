@@ -14,7 +14,8 @@
  *= require_self
  */
 @import "bootstrap-sprockets";
-@import "bootstrap";
+@import "bootstrap-custom";
+
 .user_pic{
 	float: left;
   margin-right: 20px;
@@ -23,3 +24,8 @@
 .left{
 	float: left;
 }
+
+.search{
+	text-align: center;
+}
+
