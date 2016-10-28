@@ -44,7 +44,6 @@ class TopicsController < ApplicationController
 		else
 			@comments = @comments.where(:status => "published")
 		end
-		render layout: "topic_show"
 	end
 	def create
 		@topic = current_user.topics.build(topic_params)

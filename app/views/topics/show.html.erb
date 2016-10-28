@@ -77,3 +77,11 @@
 
 <%= render(:partial => "comments_table")  %>
 <div style="float: right; margin-top: 15px; "><%= link_to "",topics_path, :class => "btn btn-lg btn-info glyphicon glyphicon-share-alt"%></div>
+
+
+
+<%= content_for :og do %>
+	<meta property="og:title"         content="<%= @topic.title %>" />
+  <meta property="og:description"   content="<%= @topic.content %>" />
+  <meta property="og:image"         content="<%= og_image_url(set_image(@topic, 'medium'))  %>" />
+<% end %>

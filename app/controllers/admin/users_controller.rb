@@ -3,7 +3,6 @@ class Admin::UsersController < ApplicationController
 	before_action :users
 	before_action :user
 	before_action :check_admin
-	layout "admin"
 	
 
 	def edit

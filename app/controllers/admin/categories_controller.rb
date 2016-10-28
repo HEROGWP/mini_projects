@@ -3,7 +3,6 @@ class Admin::CategoriesController < ApplicationController
 	before_action :categories, :only => [:index, :create, :update]
 	before_action :category, :only => [:update, :destroy]
 	before_action :check_admin
-	layout "admin"
 	
 
 	def index

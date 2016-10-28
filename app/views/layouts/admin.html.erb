@@ -2,6 +2,16 @@
 <html>
   <head>
     <title>MiniProjects</title>
+    <meta property="og:url"           content="<%=request.original_url%>" />
+    <meta property="og:type"          content="website" />
+    <% if content_for?(:og) %>
+      <%= yield :og %>
+    <% else  %>
+      <meta property="og:title"         content="MiniProjects" />
+      <meta property="og:description"   content="HEROGWP" />
+      <meta property="og:image"         content="<%= og_image_url('/images/medium/missing.JPG') %>" />
+    <% end %>
+    <meta property="fb:app_id" content="310178242697156" />
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
