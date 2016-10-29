@@ -44,7 +44,7 @@
 		<tr>
 			<td><%= truncate(v.name, :length => 40) %></td>
 			<td><%= truncate(v.url_address, :length => 35) %></td>
-			<td><%= truncate(("https://mini-projects.herokuapp.com/"+v.random.to_s), :length => 50) %></td>
+			<td><%= link_to truncate((set_video_url(v.random.to_s)), :length => 50), set_video_url(v.random.to_s) %></td>
 			<td><%= v.times %></td>
 			<td><%= truncate(v.description, :length => 10) %></td>
 			<td>
