@@ -1,8 +1,11 @@
 class VideosController < ApplicationController
-	before_action :authenticate_user!, :except => [:index]
+	skip_before_action :verify_authenticity_token
+	before_action :authenticate_user!, :except => [:index, :create]
 	before_action :videos
 	before_action :video, :only => [:update, :destroy]
 	
+
+
 	def index
 		if params[:id]
 			@video = Video.find(params[:id])
